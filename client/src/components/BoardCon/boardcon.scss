@@ -1,0 +1,67 @@
+@import "../../settings";
+
+.app-column-board {
+  height: $board-content-height;
+  display: flex;
+  // margin: 0 $gap $gap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  &:after {
+    content: "";
+    flex: 0 0 $gap;
+  }
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+  &::-webkit-scrollbar:horizontal {
+    height: 11px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.24);
+    border-right: 8px;
+  }
+
+  .not-found {
+    padding: $gap;
+    color: rgb(217, 30, 24);
+  }
+
+  //column dnd styles
+  .column-drop-view {
+    // background-color: rgba(150, 150, 200, 0.1);
+    // border: 1px #abc;
+    margin: 5px 45px 5px 5px;
+  }
+
+  .add-new-column {
+    width: 250px;
+    max-width: 250px;
+    line-height: 32px;
+    padding: 2px 0 4px 16px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    background-color: hsla(0, 0%, 75%, 0.82);
+    margin-top: $gap;
+    margin-left: $gap;
+    border-radius: $element-radius;
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 0.34);
+    }
+  }
+  .enter-new-column {
+    max-width: 250px;
+    background-color: $board-content-column-color;
+    line-height: 32px;
+    margin-top: $gap;
+    padding: 4px 10px;
+    margin-left: $gap;
+    border-radius: $element-radius;
+    input.input-box {
+      margin: 5px 0;
+      &:focus {
+        border-color: $fade-text-color;
+      }
+    }
+  }
+}

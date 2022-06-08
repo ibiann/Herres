@@ -1,0 +1,114 @@
+@import "../../settings";
+
+.app-navbar-top {
+  height: $app-navbar-height;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  color: rgb(8, 14, 44);
+  .appbar-container {
+    max-width: 100%;
+    .action-apps {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      .items-left {
+        padding: 6px 10px;
+        border-radius: 3px;
+        &:not(:first-child) {
+          margin-left: 4px;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: white;
+        }
+        &.home {
+            font-size: 15px;
+        }
+        &.searching-bar {
+          padding: 6px 0;
+          .group-searching {
+            height: 19px;
+            .input-search {
+              max-height: 100%;
+              background-color: white;
+              color: inherit;
+              border: none;
+              font-size: 14px;
+              &::placeholder {
+                color: gray;
+                opacity: 1;
+              }
+            }
+            .input-icon-searching-bar {
+              padding: 0 8px 0 0;
+              background-color: transparent;
+              border: none;
+              color: inherit;
+            }
+          }
+        }
+      }
+    }
+    .app-branding {
+      cursor: pointer;
+      &:hover {
+        background-color: gray;
+      }
+      a {
+        color: inherit;
+        &:hover {
+          text-decoration: none;
+          color: lighten($color: aliceblue, $amount: 10)
+        }
+        img.logo-top {
+          width: 30px;
+        }
+        span.logo-app-name {
+          font-size: 12px;
+          text-transform: uppercase;
+          margin-left: 4px;
+          font-weight: bold;
+        }
+      }
+    }
+    .user-action {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      div.items-right  {
+        padding: 6px 10px;
+        background-color: gray;
+        border-radius: 3px;
+        &:not(:first-child) {
+          margin-left: 4px;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: gray;
+        }
+        &.user-avatar {
+          padding: 0;
+          background-color: transparent;
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            &:hover {
+              filter: brightness(120%);
+            }
+          }
+        }
+      }
+    }
+  }
+}

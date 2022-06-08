@@ -1,0 +1,126 @@
+@import "../../settings";
+
+$column-height: calc(#{$board-content-height} - #{$gap * 2});
+
+.columns {
+  flex: 0 0 auto;
+  width: 300px;
+  height: $column-height;
+  margin-top: $gap;
+  margin-left: $gap;
+  > * {
+    background-color: $color;
+    color: $word-color;
+    padding: 0 8px;
+  }
+  header.column-drag-handle {
+    display: flex;
+    padding-left: 15px;
+    height: $column-header-height;
+    line-height: $column-header-height;
+    font-size: 16px;
+    font-weight: 600;
+    border-top-left-radius: $element-radius;
+    border-top-right-radius: $element-radius;
+    cursor: pointer;
+    .column-list-title {
+      padding: 3px;
+      flex: 90%;
+    }
+    .dropdown-actions-list {
+      flex: 10%;
+      button.dropdown-btn {
+        align-items: center;
+        padding: 0px 6px;
+        font-size: 4px;
+        width: 38px;
+        height: 26px;
+        margin-top: -5px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        background-color: $color;
+        color: $menu-icon-color;
+        border-color: $color;
+        .dropwdown-menu-icon {
+          margin-bottom: 6px;
+        }
+        &:after {
+          border: none;
+        }
+        &:hover {
+          background-color: rgba(173, 173, 173, 0.247);
+          color: rgba(0, 0, 0, 0.733);
+        }
+      }
+      .dropdown-menu {
+        padding: 0;
+        min-width: 210px;
+        margin: 1px;
+        a.dropdown-item {
+          padding: 0.1rem 1rem;
+          font-size: 14px;
+          &:not(:last-child) {
+            border-bottom: 1px solid rgb(238, 238, 238);
+          }
+        }
+      }
+    }
+  }
+  footer {
+    display: flex;
+    color: $add-icon-color;
+    padding-left: $gap;
+    height: $column-footer-height-fixed;
+    line-height: $column-footer-line-height-fixed;
+    border-bottom-left-radius: $element-radius;
+    border-bottom-right-radius: $element-radius;
+    .footer-action-handle {
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      &:hover {
+        color: $word-color;
+      }
+    }
+  }
+  .card-list {
+    margin: 0;
+    padding-top: 10px;
+    max-height: calc(
+      #{$column-height} - #{$column-header-height} - #{$column-footer-height}
+    );
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar:vertical {
+      width: 11px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: darken($color: $color, $amount: 15);
+      border-right: $element-radius;
+    }
+    //card-dnd-styles
+    .card-ghost {
+      transition: transform 0.18s ease;
+      transform: rotateZ(5deg);
+      font-weight: 600;
+    }
+
+    .card-ghost-drop {
+      transition: transform 0.18s ease-in-out;
+      transform: rotateZ(0deg);
+    }
+    .card-drop-view {
+      // background-color: rgba(150, 150, 200, 0.1);
+      // border: 1px #abc;
+      margin: 5px;
+    }
+    .add-new-card {
+      .add-new-card-text-box {
+        min-height: 54px;
+        max-height: 162px;
+      }
+    }
+  }
+}

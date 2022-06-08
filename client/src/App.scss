@@ -1,0 +1,70 @@
+@import '~antd/dist/antd.css';
+@import "./settings";
+// @import "~bootstrap/scss/bootstrap";
+
+
+.body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  list-style: 1.3em;
+}
+
+.kanban-clone {
+  height: 100vh;
+  overflow: hidden;
+  color: $word-color;
+  font-weight: 600;
+  background-color: #fff;
+  background: url("https://picsum.photos/1920/1080") no-repeat center;
+  .mui-icon {
+    font-size: 16px;
+    margin-right: 4px;
+    margin-left: 4px;
+    margin-top: 10px;
+  }
+  .kanban-b4-container {
+    margin: 0 14px;
+    padding: 0;
+  }
+  textarea:focus,
+  textarea.form-control:focus,
+  input.form-control:focus,
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  [type="text"].form-control:focus,
+  [type="password"].form-control:focus,
+  [type="email"].form-control:focus,
+  [type="tel"].form-control:focus,
+  [contenteditable].form-control:focus {
+    box-shadow: none;
+    border: 1px solid $fade-text-color;
+  }
+  .btn:focus,
+  .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .list-name-editable {
+    background-color: inherit;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    &:focus {
+      background-color: $items-elements-color;
+    }
+  }
+  span.cancel-adding-new-column-icon {
+    margin-left: $gap;
+    font-size: 20px;
+    color: rgb(217, 30, 24);
+    cursor: pointer;
+
+    &:hover {
+      color: darken($color: $color-4, $amount: 15);
+    }
+  }
+}
