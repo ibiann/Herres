@@ -1,9 +1,10 @@
 {
-  "name": "server",
+  "name": "merres-api",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "description": "",
+  "main": "src/server.js",
   "scripts": {
+    "start": "node ./build/src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "remove-build": "rmdir /s /q build",
     "create-build": "mkdir build",
@@ -13,13 +14,27 @@
     "production": "npm run build && node ./build/src/server.js",
     "dev": "nodemon --exec babel-node ./src/server.js"
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibiann/merres-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ibiann/merres-api/issues"
+  },
+  "homepage": "https://github.com/ibiann/merres-api#readme",
+  "devDependencies": {
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.18.2",
     "@babel/node": "^7.17.10",
     "@babel/plugin-transform-runtime": "^7.18.2",
     "@babel/preset-env": "^7.18.2",
     "@babel/runtime": "^7.18.3",
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
     "babel-plugin-module-resolver": "^4.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -28,10 +43,6 @@
     "lodash": "^4.17.21",
     "mongodb": "^4.7.0",
     "mongoose": "^6.3.6",
-    "nodemon": "^2.0.16",
     "query-string": "^7.1.1"
-  },
-  "devDependencies": {
-    "prettier": "2.6.2"
   }
 }
