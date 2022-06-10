@@ -9,8 +9,6 @@ import {
 } from "react-bootstrap";
 import { isEmpty, cloneDeep } from "lodash";
 import "./boardcon.scss";
-import AddIcon from "@mui/icons-material/Add";
-import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import Column from "../Column/Column";
 import { mapOrder } from "../../util/sort";
 import { applyDrag } from "../../util/dragDrop";
@@ -21,7 +19,8 @@ import {
   updateBoard,
   updateColumn,
   updateCard
-} from "../../actions/Api";
+} from "../../actions/api";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 function BoardCon() {
   const [board, setBoard] = useState({});
@@ -36,12 +35,13 @@ function BoardCon() {
 
   useEffect(() => {
     // const boardDB = initialData.boards.find((board) => board._id === "board-1");
-    const boardId = "629ec0b36208d6b780e960dc";
+    const boardId = "62a1c23ef1d619c0bbf857ea";
     fetchBoard(boardId).then((board) => {
       console.log(board);
       setBoard(board);
       setColumns(mapOrder(board.columns, board.columnOrder, "_id"));
     });
+  }, []);
     // if (boardDB) {
     //   setBoard(boardDB);
     //   //sort columns
@@ -52,7 +52,7 @@ function BoardCon() {
     //   });
     //   setColumns(mapOrder(boardDB.columns, boardDB.columnOrder, "_id"));
     // }
-  }, []);
+  // 
 
   useEffect(() => {
     if (newListInputRef && newListInputRef.current) {
@@ -146,7 +146,7 @@ function BoardCon() {
     });
   };
 
-  const onUpdateList = (newUpdateColumn) => {
+  const onUpdateListColumn = (newUpdateColumn) => {
     const columnIdUpdater = newUpdateColumn._id;
 
     let newColumns = [...columns];
@@ -186,7 +186,7 @@ function BoardCon() {
             <Column
               column={column}
               onCardDrop={onCardDrop}
-              onUpdateList={onUpdateList}
+              onUpdateListColumn={onUpdateListColumn}
             />
           </Draggable>
         ))}
@@ -195,7 +195,7 @@ function BoardCon() {
         {!openNewListForm && (
           <Row>
             <Col className="add-new-column" onClick={toggleOpenNewListForm}>
-              <AddIcon className="mui-icon" /> Add another list
+              <PlusOutlined className="mui-icon" /> Add another list
             </Col>
           </Row>
         )}
@@ -219,7 +219,7 @@ function BoardCon() {
                 className="cancel-adding-new-column-icon"
                 onClick={toggleOpenNewListForm}
               >
-                <CancelPresentationIcon />
+                <CloseCircleOutlined />
               </span>
             </Col>
           </Row>

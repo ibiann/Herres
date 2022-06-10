@@ -3,7 +3,7 @@ import "./remove.scss";
 import { Button, Modal } from "react-bootstrap";
 import HTMLReactParser from "html-react-parser";
 import { MODAL_CLOSE, MODAL_CONFIRM } from "../../util/const";
-import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
+import { CheckOutlined } from "@ant-design/icons";
 
 function Remove(props) {
   const { title, content, show, onAction } = props;
@@ -16,7 +16,7 @@ function Remove(props) {
       keyboard={false}
       animation={false}
     >
-      <FeaturedPlayListIcon className="custom-icon-modal" />
+      <CheckOutlined className="custom-icon-modal" />
       <Modal.Header>
         <Modal.Title className="h5">{HTMLReactParser(title)}</Modal.Title>
       </Modal.Header>
