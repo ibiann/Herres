@@ -6,59 +6,62 @@
   overflow: hidden;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: $app-bar-background-color;
   backdrop-filter: blur(20px);
-  color: rgb(8, 14, 44);
+  color: $app-bar-text-color;
   .appbar-container {
     max-width: 100%;
     .action-apps {
       display: flex;
       height: 100%;
       width: 100%;
+      background-color: transparent;
       flex-direction: row;
       align-items: center;
       .items-left {
-        padding: 6px 10px;
+        padding: 0px 7px;
         border-radius: 3px;
         &:not(:first-child) {
           margin-left: 4px;
         }
         &:hover {
-          cursor: pointer;
-          background-color: white;
+          background-color: $app-bar-left-text-color-hover;
         }
         &.home {
             font-size: 15px;
         }
         &.searching-bar {
-          padding: 6px 0;
+          padding: 6px 18px;
           .group-searching {
-            height: 19px;
+            height: 24px;
             .input-search {
               max-height: 100%;
-              background-color: white;
-              color: inherit;
+              background-color: $searching-input-bar;
+              color: rgb(47, 54, 64);
               border: none;
               font-size: 14px;
               &::placeholder {
-                color: gray;
+                color: $app-bar-placeholder-color;
                 opacity: 1;
               }
             }
             .input-icon-searching-bar {
-              padding: 0 8px 0 0;
-              background-color: transparent;
-              border: none;
-              color: inherit;
+              padding: 6px 5px 4px 7px;
+              background-color: $searching-input-bar-icon;   
+              border-radius: 3px;           
+              cursor: pointer;
             }
           }
+        }
+        .text-element {
+          font-weight: 700;
         }
       }
     }
     .app-branding {
-      cursor: pointer;
+      padding: 2px 0;
       &:hover {
-        background-color: gray;
+        background-color: transparent;
       }
       a {
         color: inherit;
@@ -67,12 +70,13 @@
           color: lighten($color: aliceblue, $amount: 10)
         }
         img.logo-top {
-          width: 30px;
+          width: 29px;
+          border-radius: 8px;
         }
         span.logo-app-name {
-          font-size: 12px;
+          font-size: 13px;
           text-transform: uppercase;
-          margin-left: 4px;
+          margin-left: $gap;
           font-weight: bold;
         }
       }
@@ -85,15 +89,15 @@
       align-items: center;
       justify-content: flex-end;
       div.items-right  {
-        padding: 6px 10px;
-        background-color: gray;
+        padding: 2px 11px;
+        background-color: transparent;
         border-radius: 3px;
         &:not(:first-child) {
           margin-left: 4px;
         }
         &:hover {
           cursor: pointer;
-          background-color: gray;
+          background-color: $app-bar-right-text-color-hover;
         }
         &.user-avatar {
           padding: 0;

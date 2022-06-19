@@ -1,13 +1,16 @@
 import React from "react";
 import "./App.scss";
-import AppRouter from "./router";
-import {Outlet} from "react-router-dom";
+import AppBar from "./components/AppBar/AppBar";
+import AppBoard from "./components/AppBoard/AppBoard";
+import BoardCon from "./components/BoardCon/BoardCon";
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div>
-        <AppRouter />
-        <Outlet />
+    <div className="merres">
+      <AppBar />
+      <AppBoard />
+      <BoardCon />
     </div>
   );
 }
