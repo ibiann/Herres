@@ -1,48 +1,46 @@
 @import "../../settings";
 
 .app-navbar-board {
-  height: $navbar-board-height;
-  padding-left: $gap;
   display: flex;
-  align-items: center;
+  height: $navbar-board-height;
   background-color: transparent;
   backdrop-filter: blur(15px);
-  color: rgb(36, 37, 42);
-  font-size: 1.1em;
+  color: $app-board-text;
+  font-size: 15px;
   .app-board-container {
     max-width: 100%;
     .board-navbar-info {
       display: flex;
-      height: 100%;
-      width: 100%;
+      height: 45px;
       flex-direction: row;
       align-items: center;
+      background-color: transparent;
       .divider {
-        padding: 0 4px;
-        font-size: 24px;
-        height: 40px;
+        height: 30px;
+        padding: 0 3px;
+        font-size: 18px;
         &::before {
           content:'|';
-          align-items: center;
-          color: aliceblue;
+          color: $app-board-divider;
         }
       }
       div.items {
-        padding: 2px 10px;
-        background-color: transparent;
+        padding-left: 5px;
+        padding-right: 5px;
+        background-color: $app-board-element-background-color;
         border-radius: 3px;
         &:hover {
           cursor: pointer;
-          background-color: aliceblue;
+          background-color: $app-board-hover-icon-color;
         }
         &.members-avatar {
-          padding: 2px;
+          padding: $gap;
           align-items: center;
           background-color: transparent;
           display: flex;
           justify-content: center;
           >* {
-            margin-right: 2px;
+            margin-right: 5px;
           }
           img {
             width: 28px;
@@ -55,18 +53,20 @@
             }
           }
           span {
-            padding: 5px 8px;
-            background-color: transparent;
-
-            &:hover {
-              background-color: aliceblue;
-            }
+            padding-right: 4px;
             &.members-plus {
-              border-radius: 200px;
+              background-color: $app-board-element-background-color;
+              padding-left: 5px;
+              padding-right: 2px;
+              border-radius: 10px;
             }
             &.inviting {
-              padding-right: 5px;
+              background-color: $app-board-element-background-color;
+              padding: 0 8px 0 8px;
               border-radius: 3px;
+            }
+            &:hover {
+              background-color: $app-board-hover-icon-color;
             }
           }
         }
@@ -80,15 +80,15 @@
       align-items: center;
       justify-content: flex-end;
       div.items {
-        padding: 6px 10px;
-        background-color: gray;
+        padding: 0 8px;
+        background-color: $app-board-element-background-color;
         border-radius: 3px;
         &:not(:first-child) {
           margin-left: 4px;
         }
         &:hover {
           cursor: pointer;
-          background-color: aliceblue;
+          background-color: $app-board-hover-icon-color;
         }
       }
     }
