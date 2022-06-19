@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@mui/styles";
 import {Button, Input, Typography} from "antd";
 import {Box, Link, Paper} from "@mui/material";
-import TrelloLogo from '../assets/trello_logo_icon_189227.png'
+import logo from '../assets/imgs/logo.png'
 const useStyle = makeStyles({
    loginFormContainer: {
        width: '100%',
@@ -54,7 +54,7 @@ const LoginPage = () => {
     return (
         <Box className={classes.loginPageContainer}>
             <Box className={classes.logoContainer}>
-                <img className={classes.logoImage} src={TrelloLogo} alt="logo"/>
+                <img className={classes.logoImage} src={logo} alt="logo"/>
                 <Typography  className={classes.logoTitle}>Trello</Typography>
             </Box>
             <Paper className={classes.loginFormContainer}>
