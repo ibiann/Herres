@@ -10,7 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 const AppRouter = () => {
     return (
         <Routes>
-            <Route path={'/'} element={<AppPage />} />
+            <Route path='/board' element={<AppPage />} />
             <Route path='/index' element={<IndexPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
