@@ -6,6 +6,7 @@ import TrelloLogo from '../assets/trello_logo_icon_189227.png'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import http from '../config/http';
+
 const useStyle = makeStyles({
     loginFormContainer: {
         width: '100%',
@@ -67,7 +68,7 @@ const RegisterPage = () => {
     return (
         <Box className={classes.loginPageContainer}>
             <Box className={classes.logoContainer}>
-                <img className={classes.logoImage} src={TrelloLogo} alt="logo"/>
+                <img className={classes.logoImage} src={logo} alt="logo"/>
                 <Typography  className={classes.logoTitle}>Trello</Typography>
             </Box>
             <Paper className={classes.loginFormContainer}>

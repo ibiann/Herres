@@ -31,11 +31,11 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
       flex: 10%;
       button.dropdown-btn {
         align-items: center;
-        padding: 0px 6px;
-        font-size: 4px;
+        padding: 0px $gap;
+        font-size: 16px;
         width: 38px;
         height: 26px;
-        margin-top: -5px;
+        margin-bottom: 5px;
         font-weight: 600;
         letter-spacing: 1px;
         background-color: $color;
@@ -112,8 +112,6 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
       transform: rotateZ(0deg);
     }
     .card-drop-view {
-      // background-color: rgba(150, 150, 200, 0.1);
-      // border: 1px #abc;
       margin: 5px;
     }
     .add-new-card {

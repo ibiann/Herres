@@ -3,7 +3,6 @@
 .app-column-board {
   height: $board-content-height;
   display: flex;
-  // margin: 0 $gap $gap;
   overflow-x: auto;
   overflow-y: hidden;
   &:after {
@@ -22,14 +21,11 @@
   }
 
   .not-found {
-    padding: $gap;
-    color: rgb(217, 30, 24);
+    color: red; //default when using initial datasets
   }
 
   //column dnd styles
   .column-drop-view {
-    // background-color: rgba(150, 150, 200, 0.1);
-    // border: 1px #abc;
     margin: 5px 45px 5px 5px;
   }
 
@@ -39,14 +35,14 @@
     line-height: 32px;
     padding: 2px 0 4px 16px;
     cursor: pointer;
-    color: white;
+    color: $text-adding-column-element-color;
     font-size: 15px;
-    background-color: hsla(0, 0%, 75%, 0.82);
+    background-color: rgb(178, 190, 195);
     margin-top: $gap;
     margin-left: $gap;
     border-radius: $element-radius;
     &:hover {
-      background-color: hsla(0, 0%, 100%, 0.34);
+      background-color: $adding-column-element-hover-color;
     }
   }
   .enter-new-column {

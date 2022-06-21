@@ -10,20 +10,20 @@
   list-style: 1.3em;
 }
 
-.kanban-clone {
+.merres {
   height: 100vh;
   overflow: hidden;
   color: $word-color;
   font-weight: 600;
-  background-color: #fff;
-  background: url("https://picsum.photos/1920/1080") no-repeat center;
+  background-color: rgb(116, 125, 140);
+  // background: url("https://picsum.photos/1920/1080") no-repeat center;
   .mui-icon {
     font-size: 16px;
     margin-right: 4px;
     margin-left: 4px;
     margin-top: 10px;
   }
-  .kanban-b4-container {
+  .merres-b4-container {
     margin: 0 14px;
     padding: 0;
   }

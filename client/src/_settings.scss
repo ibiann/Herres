@@ -1,9 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap");
 //height
-$app-navbar-height: 4.5vh;
+$app-navbar-height: 5.5vh;
 $navbar-board-height: 5.5vh;
 $board-content-height: 88vh;
-
 $navbar-element-height: 75%;
 $navbar-element-border-height: 5px;
 $navbar-element-border-radius: 5px;
@@ -20,27 +19,44 @@ $gap: 10px;
 //icon size
 $icon-size: 16px;
 
-//Colors
-$color: rgb(236, 240, 241);
-$color-2: rgb(236, 236, 236);
-$color-3: rgb(191, 191, 191);
-$color-4: rgb(219, 10, 91);
-$app-board-bg-color: rgb(132, 140, 207);
-$app-navbar-color: rgb(205, 209, 228);
-$app-navbar-bg-color: rgb(82, 78, 183);
-$board-list-bg-color: rgb(238, 238, 238);
-$app-navbar-board-bg-color: rgb(35, 37, 42);
-$items-elements-color: #ffff;
-$add-icon-color: rgb(151, 159, 174);
-$board-content-column-color: rgb(236, 240, 241);
-$menu-icon-color: rgb(107, 119, 140);
-
-$hover-bg-color: rgba(0, 0, 0, 0.24);
-$fade-text-color: rgb(94, 108, 132);
-$word-color: rgb(36, 37, 42);
-
 //Frame
 $screen-lg: 1261px;
 $screen-md: 992px;
 $screen-sm: 768px;
 $screen-iphone: 488px;
+
+/* Colors */
+//AppBar colors
+$app-bar-background-color:rgba(86, 96, 101, 1);
+$app-bar-text-color: rgba(223, 228, 234,1.0);
+$app-bar-placeholder-color: rgb(47, 54, 64);
+$app-bar-left-text-color-hover: rgba(164, 176, 190,1.0);
+$app-bar-right-text-color-hover: rgba(164, 176, 190,1.0);
+$searching-input-bar: rgb(245, 246, 250);
+$searching-input-bar-icon: rgba(116, 125, 140,1.0);
+
+//AppBoard colors
+$app-board-text: rgb(34, 47, 62);
+$app-board-element-background-color: rgba(86, 96, 101, 0.5);
+$app-board-divider: rgb(245, 246, 250);
+$app-board-hover-icon-color: rgba(247, 241, 227,1.0);
+
+//BoardCont colors
+$text-adding-column-element-color: rgb(245, 246, 250);
+$adding-column-element-hover-color: hsla(0, 0%, 100%, 0.34);
+$board-content-column-color: rgb(236, 240, 241);
+
+//Column elements colors
+$add-icon-color: rgb(151, 159, 174);
+$menu-icon-color: rgb(107, 119, 140);
+
+//In use for all colors
+$color: rgb(236, 240, 241);
+$color-2: rgb(236, 236, 236);
+$color-3: rgb(191, 191, 191);
+$color-4: rgb(219, 10, 91);
+$items-elements-color: #ffff;
+$word-color: rgb(36, 37, 42);
+$fade-text-color: rgb(94, 108, 132);
+
+

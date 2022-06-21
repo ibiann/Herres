@@ -15,7 +15,7 @@ function AppBoard() {
             <div className="items board-logo-icon"><CoffeeOutlined />&nbsp;&nbsp;<strong>Merres</strong></div>
             <div className="divider"></div>
 
-            <div className="items board-type">Workspace</div>
+            <div className="items board-type"><strong>Workspace</strong></div>
             <div className="divider"></div>
             <div className="items members-avatar">
               <img src="https://picsum.photos/200/200" alt="" />

@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.scss";
+import './App.scss';
 import AppRouter from "./router";
 import {Outlet} from "react-router-dom";
 
