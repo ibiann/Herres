@@ -6,7 +6,8 @@ const userRouter = require('./routers/user.router')
 const { default: mongoose } = require('mongoose')
 
 const app = express();
-global.__mongoose = mongoose.connect('')
+console.log(process.env.APP_PORT)
+global.__mongoose = mongoose.connect(process.env.DB_URL)
 
 app.use(cors())
 app.use(bodyParser.json())
