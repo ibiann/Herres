@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@mui/styles";
 import {Button, Input, Typography} from "antd";
 import {Box, Link, Paper} from "@mui/material";
-import logo from '../assets/imgs/logo.png'
+import logo from '../assets/img/logo.png'
 const useStyle = makeStyles({
    loginFormContainer: {
        width: '100%',
@@ -32,7 +32,8 @@ const useStyle = makeStyles({
         marginBottom: 40
     },
     logoImage: {
-       marginRight: 6
+       marginRight: 6,
+       height: '9vh'
     },
     logoTitle: {
        fontSize: 46,
@@ -62,7 +63,11 @@ const LoginPage = () => {
                 <form>
                     <Input className={classes.input} placeholder={'Enter email'} type={'email'} />
                     <Input className={classes.input} placeholder={'Enter password'} type={'password'} />
-                    <Button className={classes.loginButton}>Login</Button>
+                    <Button className={classes.loginButton}>
+                        <Link href="/board">
+                            Login
+                        </Link>
+                    </Button>
                     <hr/>
                     <Link href={'/register'}>
                         Sign up for an account
