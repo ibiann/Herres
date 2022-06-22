@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@mui/styles";
 import {Button, Input, Typography} from "antd";
 import {Box, Link, Paper} from "@mui/material";
-import TrelloLogo from '../assets/trello_logo_icon_189227.png'
+import logo from '../assets/imgs/logo.png'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import http from '../config/http';
