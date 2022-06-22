@@ -28,7 +28,8 @@
           background-color: $app-bar-left-text-color-hover;
         }
         &.home {
-            font-size: 15px;
+          font-size: 15px;
+          color: inherit;
         }
         &.searching-bar {
           padding: 6px 18px;
@@ -47,8 +48,8 @@
             }
             .input-icon-searching-bar {
               padding: 6px 5px 4px 7px;
-              background-color: $searching-input-bar-icon;   
-              border-radius: 3px;           
+              background-color: $searching-input-bar-icon;
+              border-radius: 3px;
               cursor: pointer;
             }
           }
@@ -59,7 +60,12 @@
       }
     }
     .app-branding {
-      padding: 2px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content:center;
+      align-items: center;
+      text-align: center;
+      min-height: 20vh;
       &:hover {
         background-color: transparent;
       }
@@ -67,16 +73,18 @@
         color: inherit;
         &:hover {
           text-decoration: none;
-          color: lighten($color: aliceblue, $amount: 10)
+          color: lighten($color: aliceblue, $amount: 10);
         }
         img.logo-top {
-          width: 29px;
+          width: 30px;
           border-radius: 8px;
+          // animation: spin-animation 2500ms infinite linear;
         }
         span.logo-app-name {
-          font-size: 13px;
+          font-size: 15px;
           text-transform: uppercase;
-          margin-left: $gap;
+          margin-left: 5px;
+          margin-right: 5px;
           font-weight: bold;
         }
       }
@@ -88,7 +96,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
-      div.items-right  {
+      div.items-right {
         padding: 2px 11px;
         background-color: transparent;
         border-radius: 3px;
@@ -99,7 +107,11 @@
           cursor: pointer;
           background-color: $app-bar-right-text-color-hover;
         }
+<<<<<<< HEAD:client/src/assets/scss/appbar.scss
+        &.user {
+=======
         &.user{
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/appbar.scss
           padding: 0;
           background-color: transparent;
           img {
@@ -113,6 +125,14 @@
           }
         }
       }
+    }
+  }
+  @keyframes spin-animation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 }

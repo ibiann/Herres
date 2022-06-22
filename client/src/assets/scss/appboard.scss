@@ -20,7 +20,7 @@
         padding-left: 5px;
         font-size: 18px;
         &::before {
-          content:'|';
+          content: "|";
           color: $app-board-divider;
         }
       }
@@ -39,7 +39,7 @@
           background-color: transparent;
           display: flex;
           justify-content: center;
-          >* {
+          > * {
             margin-right: 5px;
           }
           img {
@@ -49,7 +49,7 @@
             object-fit: cover;
             border: 0;
             &:hover {
-              filter: brightness(120%)
+              filter: brightness(120%);
             }
           }
           span {
@@ -59,9 +59,12 @@
               padding: 0 8px 0 8px;
               border-radius: 3px;
             }
+<<<<<<< HEAD:client/src/assets/scss/appboard.scss
+=======
             // &:hover {
             //   background-color: $app-board-hover-icon-color;
             // }
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBoard/appboard.scss
           }
         }
       }

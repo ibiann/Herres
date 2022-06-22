@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo.png";
 
 const useStyle = makeStyles({
   loginFormContainer: {
@@ -39,7 +40,10 @@ const useStyle = makeStyles({
   logoImage: {
     marginRight: 6,
     height: "6.1vh",
+<<<<<<< HEAD
+=======
 
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14
   },
   logoTitle: {
     fontSize: 46,
@@ -57,9 +61,14 @@ const useStyle = makeStyles({
 
 const LoginPage = () => {
   const classes = useStyle();
+<<<<<<< HEAD
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+=======
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14
   const { control, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
@@ -73,10 +82,13 @@ const LoginPage = () => {
         },
       })
     );
+<<<<<<< HEAD
+=======
 
     dispatch(loginAction({ data: form, cb: () => {
         navigate('/')
     }}))
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14
   };
 
   return (

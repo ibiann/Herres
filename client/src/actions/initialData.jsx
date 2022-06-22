@@ -1,3 +1,4 @@
+/* Initial Data for fixing ui board */
 export const initialData = {
   currentBoard: 0,
   boards: [
@@ -27,8 +28,8 @@ export const initialData = {
               id: "card-1",
               boardId: "board-1",
               columnId: "column-1",
-              title: " ",
-              cover: "https://picsum.photos/300/300",
+              title: "Just a title",
+              cover: null,
             },
             {
               id: "card-2",
@@ -42,7 +43,7 @@ export const initialData = {
               boardId: "board-1",
               columnId: "column-1",
               title: "Title of card 3",
-              cover: "https://picsum.photos/300/300",
+              cover: null,
             },
             {
               id: "card-4",
@@ -85,7 +86,7 @@ export const initialData = {
               boardId: "board-1",
               columnId: "column-2",
               title: "Title of card 9",
-              cover: "https://picsum.photos/300/300",
+              cover: null,
             },
             {
               id: "card-10",
@@ -176,7 +177,7 @@ export const initialData = {
               boardId: "board-2",
               columnId: "column-1",
               title: "Title of card 4",
-              cover: "https://picsum.photos/300/300",
+              cover: null,
             },
             {
               id: "card-5",
@@ -219,7 +220,7 @@ export const initialData = {
               boardId: "board-2",
               columnId: "column-2",
               title: "Title of card 10",
-              cover: "https://picsum.photos/300/300",
+              cover: null,
             },
           ],
         },
