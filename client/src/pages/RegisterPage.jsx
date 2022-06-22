@@ -8,51 +8,6 @@ import { useNavigate } from "react-router-dom";
 import http from "../config/http";
 
 const useStyle = makeStyles({
-<<<<<<< HEAD
-  loginFormContainer: {
-    width: "100%",
-    maxWidth: 320,
-    backgroundColor: "red",
-    padding: 22,
-  },
-  input: {
-    margin: "8px 0px",
-  },
-  loginButton: {
-    backgroundColor: "#5AAC44",
-    color: "#FFF",
-    width: "100%",
-    fontWeight: "bold",
-  },
-  loginTitle: {
-    color: "#606E87",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  logoContainer: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: 40,
-  },
-  logoImage: {
-    marginRight: 6,
-    height: "6.1vh",
-  },
-  logoTitle: {
-    fontSize: 46,
-    fontWeight: "bold",
-    color: "#253959",
-  },
-  loginPageContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    height: "100vh",
-  },
-=======
     loginFormContainer: {
         width: '100%',
         maxWidth: 320,
@@ -96,7 +51,6 @@ const useStyle = makeStyles({
         flexDirection:'column',
         height: '100vh'
     }
->>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14
 });
 
 const RegisterPage = () => {
