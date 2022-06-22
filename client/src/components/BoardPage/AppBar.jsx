@@ -8,7 +8,10 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { Dropdown, Menu } from "antd";
+<<<<<<< HEAD:client/src/components/BoardPage/AppBar.jsx
 import logo from "../../assets/svg/logo.svg";
+=======
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/AppBar.jsx
 
 import {
   HomeOutlined,
@@ -23,7 +26,10 @@ function AppBar() {
         {
           key: "1",
           label: (
+<<<<<<< HEAD:client/src/components/BoardPage/AppBar.jsx
             // eslint-disable-next-line jsx-a11y/anchor-is-valid
+=======
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/AppBar.jsx
             <a target="_blank" rel="noopener noreferrer" href="#">
               Settings
             </a>
@@ -32,7 +38,11 @@ function AppBar() {
         {
           key: "2",
           label: (
+<<<<<<< HEAD:client/src/components/BoardPage/AppBar.jsx
             <a target="_self" rel="noopener noreferrer" href={"/login"}>
+=======
+            <a target="_blank" rel="noopener noreferrer" href={"/login"}>
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/AppBar.jsx
               Log out
             </a>
           ),
@@ -40,7 +50,10 @@ function AppBar() {
       ]}
     />
   );
+<<<<<<< HEAD:client/src/components/BoardPage/AppBar.jsx
 
+=======
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/AppBar.jsx
   return (
     <nav className="app-navbar-top">
       <BootstrapContainer className="appbar-container">

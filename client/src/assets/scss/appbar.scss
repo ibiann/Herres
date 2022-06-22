@@ -107,7 +107,11 @@
           cursor: pointer;
           background-color: $app-bar-right-text-color-hover;
         }
+<<<<<<< HEAD:client/src/assets/scss/appbar.scss
         &.user {
+=======
+        &.user{
+>>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/AppBar/appbar.scss
           padding: 0;
           background-color: transparent;
           img {
