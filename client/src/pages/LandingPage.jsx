@@ -1,8 +1,9 @@
-import React from "react";
-import "../App.scss";
+import React from 'react'
 
-function AppPage() {
-  return <div className="App-page"></div>;
+const LandingPage = () => {
+  return (
+    <div>LandingPage</div>
+  )
 }
 
-export default AppPage;
+export default LandingPage

@@ -3,12 +3,7 @@ import { Container, Draggable } from "react-smooth-dnd";
 import { Dropdown, Form, Button } from "react-bootstrap";
 import "../../assets/scss/column.scss";
 import { cloneDeep } from "lodash";
-<<<<<<< HEAD:client/src/components/BoardComponent/Column.jsx
-import Card from "../BoardComponent/Card";
-=======
-import "./column.scss";
-import Card from "../Card/Card";
->>>>>>> 33e004eabbfd95329520c92ab613b63510d6cd14:client/src/components/Column/Column.jsx
+import Card from '../BoardComponent/Card'
 import Remove from "../Modal/Remove";
 import { mapOrder } from "../../util/sort";
 import { MODAL_CONFIRM } from "../../util/const";
