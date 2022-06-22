@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@mui/styles";
 import {Button, Input, Typography} from "antd";
 import {Box, Link, Paper} from "@mui/material";
-import TrelloLogo from '../assets/trello_logo_icon_189227.png'
+import logo from '../assets/img/logo.png'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import http from '../config/http';
@@ -36,7 +36,8 @@ const useStyle = makeStyles({
         marginBottom: 40
     },
     logoImage: {
-        marginRight: 6
+        marginRight: 6,
+        height: '6.1vh'
     },
     logoTitle: {
         fontSize: 46,
@@ -74,7 +75,9 @@ const RegisterPage = () => {
             <Paper className={classes.loginFormContainer}>
                 <Typography className={classes.loginTitle} >Sign up for your account</Typography>
                 <form>
+               
                     <Controller
+
                         control={control}
                         name='name'
                         render={({field}) => (
