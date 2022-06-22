@@ -41,7 +41,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
         background-color: $color;
         color: $menu-icon-color;
         border-color: $color;
-        .dropwdown-menu-icon {
+        .dropdown-menu-icon {
           margin-bottom: 6px;
         }
         &:after {

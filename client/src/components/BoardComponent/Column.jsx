@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Draggable } from "react-smooth-dnd";
 import { Dropdown, Form, Button } from "react-bootstrap";
+import "../../assets/scss/column.scss";
 import { cloneDeep } from "lodash";
-import "./column.scss";
-import Card from "../Card/Card";
-import Remove from "../Dialogue/Remove";
+import Card from "../BoardComponent/Card";
+import Remove from "../Modal/Remove";
 import { mapOrder } from "../../util/sort";
 import { MODAL_CONFIRM } from "../../util/const";
 import {
@@ -13,7 +13,11 @@ import {
 } from "../../util/contentEditable";
 import { createCard, updateColumn } from "../../actions/api";
 
-import { CloseCircleOutlined, MenuOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  MenuOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 
 function Column(props) {
   const { column, onCardDrop, onUpdateListColumn } = props;
@@ -55,7 +59,7 @@ function Column(props) {
       // Call Api update column
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
         onUpdateListColumn(updatedColumn);
-      })
+      });
     }
     toggleShowConfirmRemove();
   };
@@ -66,12 +70,12 @@ function Column(props) {
       const newColumn = {
         ...column,
         title: listTitle,
-      }
+      };
       // Call Api update column
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
         updatedColumn.cards = newColumn.cards;
         onUpdateListColumn(updatedColumn);
-      })
+      });
     }
   };
 
@@ -122,16 +126,15 @@ function Column(props) {
               size="sm"
               className="dropdown-btn"
             >
-              <MenuOutlined className="dropwdown-menu-icon" />
+              <MenuOutlined className="dropdown-menu-icon" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={toggleOpenNewCardForm}>
                 Add Card
               </Dropdown.Item>
               <Dropdown.Item onClick={toggleShowConfirmRemove}>
-                Remove
+                Archive this list
               </Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Move Cards</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -158,7 +161,8 @@ function Column(props) {
             </Draggable>
           ))}
         </Container>
-        {/* copy similiar form from board content */}
+
+        {/* copy similar form from board content */}
         {openNewCardForm && (
           <div className="add-new-card">
             <Form.Control
@@ -200,7 +204,7 @@ function Column(props) {
         show={showConfirmRemove}
         onAction={onRemoveAction}
         title="Remove Column"
-        content={`bruh ${column.title} bruh`}
+        content={`Removing current ${column.title} ???`}
       />
     </div>
   );

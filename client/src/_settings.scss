@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap");
 //height
-$app-navbar-height: 5.5vh;
+$app-navbar-height: 4.8vh;
 $navbar-board-height: 5.5vh;
 $board-content-height: 88vh;
 $navbar-element-height: 75%;
@@ -27,19 +27,19 @@ $screen-iphone: 488px;
 
 /* Colors */
 //AppBar colors
-$app-bar-background-color:rgba(86, 96, 101, 1);
-$app-bar-text-color: rgba(223, 228, 234,1.0);
+$app-bar-background-color: rgba(86, 96, 101, 1);
+$app-bar-text-color: rgba(223, 228, 234, 1);
 $app-bar-placeholder-color: rgb(47, 54, 64);
-$app-bar-left-text-color-hover: rgba(164, 176, 190,1.0);
-$app-bar-right-text-color-hover: rgba(164, 176, 190,1.0);
+$app-bar-left-text-color-hover: rgba(164, 176, 190, 1);
+$app-bar-right-text-color-hover: rgba(164, 176, 190, 1);
 $searching-input-bar: rgb(245, 246, 250);
-$searching-input-bar-icon: rgba(116, 125, 140,1.0);
+$searching-input-bar-icon: rgba(116, 125, 140, 1);
 
 //AppBoard colors
 $app-board-text: rgb(34, 47, 62);
 $app-board-element-background-color: rgba(86, 96, 101, 0.5);
 $app-board-divider: rgb(245, 246, 250);
-$app-board-hover-icon-color: rgba(247, 241, 227,1.0);
+$app-board-hover-icon-color: rgba(247, 241, 227, 1);
 
 //BoardCont colors
 $text-adding-column-element-color: rgb(245, 246, 250);
@@ -58,5 +58,3 @@ $color-4: rgb(219, 10, 91);
 $items-elements-color: #ffff;
 $word-color: rgb(36, 37, 42);
 $fade-text-color: rgb(94, 108, 132);
-
-

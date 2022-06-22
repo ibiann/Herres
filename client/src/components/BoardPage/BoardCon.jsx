@@ -8,17 +8,18 @@ import {
   Button,
 } from "react-bootstrap";
 import { isEmpty, cloneDeep } from "lodash";
-import './boardcon.scss'
-import Column from "../Column/Column";
+import "../../assets/scss/boardcon.scss";
+import Column from "../BoardComponent/Column";
 import { mapOrder } from "../../util/sort";
 import { applyDrag } from "../../util/dragDrop";
 import { initialData } from "../../actions/initialData";
 import {
+  // eslint-disable-next-line no-unused-vars
   fetchBoard,
   createColumn,
   updateBoard,
   updateColumn,
-  updateCard
+  updateCard,
 } from "../../actions/api";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -91,7 +92,7 @@ function BoardCon() {
       let currentColumn = newColumns.find((c) => c._id === columnId);
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
       currentColumn.cardOrder = currentColumn.cards.map((i) => i._id);
-      
+
       setColumns(newColumns); //update column
       if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
         /**
@@ -106,15 +107,15 @@ function BoardCon() {
          * Moving cards between columns
          */
         // Calling api update the cardOrder in column
-         updateColumn(currentColumn._id, currentColumn).catch(() => {
-            setColumns(columns)
+        updateColumn(currentColumn._id, currentColumn).catch(() => {
+          setColumns(columns);
         });
 
         if (dropResult.addedIndex !== null) {
-          let currentCard = cloneDeep(dropResult.payload)
-          currentCard.columnId = currentColumn._id
+          let currentCard = cloneDeep(dropResult.payload);
+          currentCard.columnId = currentColumn._id;
           // Calling api update column in current cards, khi addedIndex khac null
-          updateCard(currentCard._id, currentCard)
+          updateCard(currentCard._id, currentCard);
         }
       }
     }
@@ -132,7 +133,7 @@ function BoardCon() {
     };
     // Call Api columns
     createColumn(newColumnToAdd).then((column) => {
-      let newColumns = cloneDeep(columns)
+      let newColumns = cloneDeep(columns);
       newColumns.push(column);
 
       let newBoard = { ...board };
