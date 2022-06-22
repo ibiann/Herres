@@ -2,9 +2,9 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Button, Input, Typography } from "antd";
 import { Box, Link, Paper } from "@mui/material";
+import logo from "../assets/img/logo.png";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import TrelloLogo from "../assets/trello_logo_icon_189227.png";
 import { loginAction } from "../redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +38,8 @@ const useStyle = makeStyles({
   },
   logoImage: {
     marginRight: 6,
-    height: '6.1vh'
+    height: "6.1vh",
+
   },
   logoTitle: {
     fontSize: 46,
@@ -58,11 +59,21 @@ const LoginPage = () => {
   const classes = useStyle();
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const { control, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
 
   const submitLogin = (form) => {
+    dispatch(
+      loginAction({
+        data: form,
+        cb: () => {
+          navigate("/");
+        },
+      })
+    );
+
     dispatch(loginAction({ data: form, cb: () => {
         navigate('/')
     }}))
@@ -71,7 +82,7 @@ const LoginPage = () => {
   return (
     <Box className={classes.loginPageContainer}>
       <Box className={classes.logoContainer}>
-        <img className={classes.logoImage} src={TrelloLogo} alt="logo" />
+        <img className={classes.logoImage} src={logo} alt="logo" />
         <Typography className={classes.logoTitle}>Trello</Typography>
       </Box>
       <Paper className={classes.loginFormContainer}>
