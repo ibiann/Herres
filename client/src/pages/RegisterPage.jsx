@@ -33,7 +33,7 @@ const useStyle = makeStyles({
     },
     logoImage: {
         marginRight: 6,
-        height: '9vh'
+        height: '6.1vh'
     },
     logoTitle: {
         fontSize: 46,
@@ -66,7 +66,11 @@ const RegisterPage = () => {
                     <Input className={classes.input} placeholder={'Enter email'} type={'email'} />
                     <Input className={classes.input} placeholder={'Enter password'} type={'password'} />
                     <Input className={classes.input} placeholder={'Confirm password'} type={'password'} />
-                    <Button className={classes.loginButton}>Complete</Button>
+                    <Button className={classes.loginButton}>
+                        <Link href={'/login'}>
+                            Complete
+                        </Link>
+                    </Button>
                     <hr/>
                     <Link href={'/login'}>
                         Already have a account? Log in

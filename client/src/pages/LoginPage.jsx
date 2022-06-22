@@ -33,7 +33,7 @@ const useStyle = makeStyles({
     },
     logoImage: {
        marginRight: 6,
-       height: '9vh'
+       height: '6.1vh'
     },
     logoTitle: {
        fontSize: 46,
