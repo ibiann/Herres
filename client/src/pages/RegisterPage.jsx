@@ -6,6 +6,7 @@ import logo from '../assets/img/logo.png'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import http from '../config/http';
+
 const useStyle = makeStyles({
     loginFormContainer: {
         width: '100%',
@@ -74,7 +75,9 @@ const RegisterPage = () => {
             <Paper className={classes.loginFormContainer}>
                 <Typography className={classes.loginTitle} >Sign up for your account</Typography>
                 <form>
-                <Controller
+               
+                    <Controller
+
                         control={control}
                         name='name'
                         render={({field}) => (
