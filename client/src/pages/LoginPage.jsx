@@ -38,7 +38,7 @@ const useStyle = makeStyles({
   },
   logoImage: {
     marginRight: 6,
-    height: '6.1vh'
+    height: "6.1vh",
   },
   logoTitle: {
     fontSize: 46,
@@ -56,16 +56,21 @@ const useStyle = makeStyles({
 
 const LoginPage = () => {
   const classes = useStyle();
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
 
   const submitLogin = (form) => {
-    dispatch(loginAction({ data: form, cb: () => {
-        navigate('/')
-    }}))
+    dispatch(
+      loginAction({
+        data: form,
+        cb: () => {
+          navigate("/");
+        },
+      })
+    );
   };
 
   return (

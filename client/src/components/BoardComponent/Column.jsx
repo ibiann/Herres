@@ -3,7 +3,7 @@ import { Container, Draggable } from "react-smooth-dnd";
 import { Dropdown, Form, Button } from "react-bootstrap";
 import "../../assets/scss/column.scss";
 import { cloneDeep } from "lodash";
-import Card from '../BoardComponent/Card'
+import Card from "../BoardComponent/Card";
 import Remove from "../Modal/Remove";
 import { mapOrder } from "../../util/sort";
 import { MODAL_CONFIRM } from "../../util/const";
@@ -130,7 +130,7 @@ function Column(props) {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={toggleOpenNewCardForm}>
-                Add Card
+                Add card
               </Dropdown.Item>
               <Dropdown.Item onClick={toggleShowConfirmRemove}>
                 Archive this list
