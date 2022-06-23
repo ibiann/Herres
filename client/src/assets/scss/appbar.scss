@@ -19,23 +19,24 @@
       flex-direction: row;
       align-items: center;
       .items-left {
+        font-size: 18px;
         padding: 0px 7px;
         border-radius: 3px;
         &:not(:first-child) {
           margin-left: 4px;
         }
+        &.home a{
+          font-size: 18px;
+          color: inherit;
+        }
         &:hover {
           background-color: $app-bar-left-text-color-hover;
-        }
-        &.home {
-          font-size: 15px;
-          color: inherit;
         }
         &.searching-bar {
           padding: 6px 18px;
           .group-searching {
             height: 24px;
-            .input-search {
+            .searching-input-box {
               max-height: 100%;
               background-color: $searching-input-bar;
               color: rgb(47, 54, 64);
@@ -55,6 +56,7 @@
           }
         }
         .text-element {
+          font-size: 16px;
           font-weight: 700;
         }
       }
@@ -62,7 +64,7 @@
     .app-branding {
       display: flex;
       flex-direction: column;
-      justify-content:center;
+      justify-content: center;
       align-items: center;
       text-align: center;
       min-height: 20vh;
@@ -107,7 +109,7 @@
           cursor: pointer;
           background-color: $app-bar-right-text-color-hover;
         }
-        &.user{
+        &.user {
           padding: 0;
           background-color: transparent;
           img {
