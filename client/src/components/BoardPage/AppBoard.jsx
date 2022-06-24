@@ -92,7 +92,7 @@ function AppBoard() {
                         <Input
                           allowClear={{
                             clearIcon: (
-                              <CloseOutlined style={{ color: "red" }} />
+                              <CloseOutlined style={{ color: "#e74c3c" }} />
                             ),
                           }}
                           placeholder="Please enter the email"
