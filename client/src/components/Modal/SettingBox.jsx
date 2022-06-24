@@ -6,6 +6,10 @@ import { CheckOutlined } from "@ant-design/icons";
 function SettingBox(props) {
   const { show, onAction } = props;
 
+  const handleSubmitLoading = (value)  => {
+    return value
+  }
+
   return (
     <Modal
       show={show}

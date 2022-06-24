@@ -64,11 +64,11 @@ function AppBoard() {
               </Paragraph>
               <div className="divider"></div>
               <div className="items members-avatar">
+                {/* <img src="https://picsum.photos/200/200" alt="" />
                 <img src="https://picsum.photos/200/200" alt="" />
                 <img src="https://picsum.photos/200/200" alt="" />
                 <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
+                <img src="https://picsum.photos/200/200" alt="" /> */}
                 <span className="inviting">
                   <ContactsOutlined />
                   <strong>Invite</strong>
