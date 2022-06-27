@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../assets/scss/appboard.scss";
-import { Divider, Input, Select, Typography, Space } from "antd";
+import { Divider, Input, Select, Typography, Space, Avatar } from "antd";
 import { Container as BootstrapContainer, Row, Col } from "react-bootstrap";
 import {
   BookOutlined,
@@ -17,6 +17,15 @@ function AppBoard() {
   const [lengthLimitText, setLengthLimitText] = useState("Custom Board");
   const [itemDropDownList, SetItemDropDownList] = useState([]);
   const [nameItemList, setNameItemList] = useState("");
+
+  const [uploadingFile, setUploadingFile] = useState(null);
+
+  const handleChangeUpload = function loadFile(e) {
+    if (e.target.files.length > 0) {
+      const uploadingFile = URL.createObjectURL(e.target.files[0]);
+      setUploadingFile(uploadingFile);
+    }
+  };
 
   const onNameItemListChange = (e) => {
     setNameItemList(e.target.value);
@@ -42,7 +51,7 @@ function AppBoard() {
                 <CoffeeOutlined />
                 &nbsp;&nbsp;<strong>Merres</strong>
               </div>
-              <div className="divider"></div>
+              <div className="divider" />
 
               <Paragraph
                 style={{
@@ -62,13 +71,38 @@ function AppBoard() {
               >
                 {lengthLimitText}
               </Paragraph>
-              <div className="divider"></div>
-              <div className="items members-avatar">
-                <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
-                <img src="https://picsum.photos/200/200" alt="" />
+              <div className="divider" />
+              <div className="items avatar">
+                <Avatar.Group>
+                  <Avatar
+                    size={{
+                      sm: 32,
+                    }}
+                    src="https://picsum.photos/id/10/200/300/?blur"
+                    alt="img"
+                  />
+                  <Avatar
+                    size={{
+                      sm: 32,
+                    }}
+                    src="https://picsum.photos/id/1/200/300/?blur"
+                    alt="img"
+                  />
+                  <Avatar
+                    size={{
+                      sm: 32,
+                    }}
+                    src="https://picsum.photos/id/1005/200/300/?blur"
+                    alt="img"
+                  />
+                  <Avatar
+                    size={{
+                      sm: 32,
+                    }}
+                    src="https://picsum.photos/id/1004/200/300/?blur"
+                    alt="img"
+                  />
+                </Avatar.Group>
                 <span className="inviting">
                   <ContactsOutlined />
                   <strong>Invite</strong>

@@ -29,27 +29,28 @@
         align-items: center;
         background-color: $app-board-element-background-color;
         border-radius: 3px;
+        cursor: pointer;
         &:hover {
-          cursor: pointer;
+          color: rgba(255, 255, 255, 1);
+          filter: brightness(100%);
           background-color: $app-board-hover-icon-color;
         }
-        &.members-avatar {
+        &.avatar {
           padding: $gap;
           align-items: center;
           background-color: transparent;
           display: flex;
-          justify-content: center;
           > * {
-            margin-right: 5px;
+            margin-right: 8px;
           }
-          img {
+          .ant-avatar {
             width: 28px;
             height: 28px;
+            padding: 0;
             border-radius: 50%;
-            object-fit: cover;
             border: 0;
             &:hover {
-              filter: brightness(120%);
+              filter: brightness(150%);
             }
           }
           span {
@@ -58,10 +59,11 @@
               background-color: $app-board-element-background-color;
               padding: 0 8px 0 8px;
               border-radius: 3px;
+
+              &:hover {
+                background-color: $app-board-hover-icon-color;
+              }
             }
-            // &:hover {
-            //   background-color: $app-board-hover-icon-color;
-            // }
           }
         }
       }
