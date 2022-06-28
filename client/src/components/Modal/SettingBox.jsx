@@ -31,6 +31,10 @@ function SettingBox(props) {
     setValidatedForm(true)
   }
 
+  const handleSubmitLoading = (value)  => {
+    return value
+  }
+
   return (
     <Modal
       show={show}

@@ -71,6 +71,7 @@ function AppBoard() {
               >
                 {lengthLimitText}
               </Paragraph>
+
               <div className="divider" />
               <div className="items avatar">
                 <Avatar.Group>
