@@ -1,0 +1,25 @@
+@import "../../../settings";
+
+.row-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 0.3rem;
+  color: #6a6a6a;
+
+  .add-btn-group {
+    display: inline;
+    width: 6rem;
+    margin-left: -2px;
+    .close-btn-group {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}
