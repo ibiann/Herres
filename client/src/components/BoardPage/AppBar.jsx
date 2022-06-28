@@ -4,7 +4,7 @@ import { Container as BootstrapContainer, Row, Col } from "react-bootstrap";
 import { cloneDeep } from "lodash";
 import SettingBox from "../Modal/SettingBox";
 import { MODAL_CONFIRM } from "../../util/const";
-import { Dropdown, Menu, Tooltip, message, Button, Input } from "antd";
+import { Dropdown, Menu, Tooltip, Button, Input } from "antd";
 import logo from "../../assets/img/logo.png";
 import {
   HomeFilled,
@@ -32,7 +32,7 @@ function AppBar() {
 
   const onSettingAction = (type) => {
     if (type === MODAL_CONFIRM) {
-      console.log("settings");
+      console.log("");
     }
     toggleShowSettingBox();
   };
@@ -76,7 +76,9 @@ function AppBar() {
             marginRight: "8px",
           }}
         />
+        <a href="/login" target="_self">
         <span>Log out</span>
+        </a>
       </Menu.Item>
     </Menu>
   );
@@ -119,7 +121,7 @@ function AppBar() {
           <Col xs={6} md={4} className="col-no-padding">
             <div className="action-apps">
               <div className="items-left home">
-                <a href={"/"} target="_self">
+                <a href={"/create"} target="_self">
                   <HomeFilled />
                 </a>
               </div>
@@ -171,7 +173,7 @@ function AppBar() {
           </Col>
           <Col xs={6} md={4} className="col-no-padding">
             <div className="app-branding text">
-              <a href="/" target="_self">
+              <a href="/create" target="_self">
                 <img src={logo} className="logo-top" alt="merres-logo" />
                 <div className="logo-app-name-container">
                   <span className="logo-app-name">Merres</span>

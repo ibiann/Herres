@@ -1,0 +1,58 @@
+@import "../../settings";
+
+body {
+  background-color: $app-board-element-background-color;
+  .list-board {
+    display: flex;
+    padding: 30px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    .ant-card {
+      padding: 0;
+      line-height: 12px;
+      border-radius: 10px;
+      transition: box-shadow 0.3s;
+      .ant-card-body {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      img {
+        border-radius: 10px 10px 0 0;
+        object-fit: cover;
+      }
+      &:hover {
+        filter: brightness(112%);
+        box-shadow: 0 0 11px rgba(33, 33, 33, 0.5s);
+      }
+      a {
+        color: rgb(6, 82, 221);
+        text-decoration: none;
+        text-transform: capitalize;
+
+        &:hover {
+          color: rgb(27, 20, 100);
+
+          &:active {
+            color: rgb(87, 88, 187);
+
+            &:visited {
+              color: rgb(234, 32, 39);
+            }
+          }
+        }
+      }
+    }
+    .add-board-icon {
+      color: rgb(245, 246, 250);
+      background-color: rgb(220, 221, 225);
+      border: none;
+
+      &:hover {
+        color: rgb(72, 126, 176);
+        filter: brightness(108%);
+        box-shadow: 0 0 11px rgba(33, 33, 33, 0.5s);
+      }
+    }
+  }
+}
