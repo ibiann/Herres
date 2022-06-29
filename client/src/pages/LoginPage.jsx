@@ -4,7 +4,7 @@ import { Button, Input, Typography } from "antd";
 import { Box, Link, Paper } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import logo from "../assets/img/logo.svg";
+import logo from '../assets/img/svg/logo.svg';
 import { loginAction } from "../redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -76,7 +76,7 @@ const LoginPage = () => {
   return (
     <Box className={classes.loginPageContainer}>
       <Box className={classes.logoContainer}>
-        <img className={classes.logoImage} src={TrelloLogo} alt="logo" />
+        <img className={classes.logoImage} src={logo} alt="logo" />
         <Typography className={classes.logoTitle}>Trello</Typography>
       </Box>
       <Paper className={classes.loginFormContainer}>
