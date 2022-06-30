@@ -1,7 +1,8 @@
 @import "../../settings";
 
-body {
-  background-color: $app-board-element-background-color;
+.create-board-navbar {
+  height: 100vh;
+  background-color: $screen-color;
   .list-board {
     display: flex;
     padding: 30px;

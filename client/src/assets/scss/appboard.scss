@@ -3,7 +3,7 @@
 .app-navbar-board {
   display: flex;
   height: $navbar-board-height;
-  background-color: transparent;
+  background-color: $app-board-element-background-color;
   backdrop-filter: blur(15px);
   color: $app-board-text;
   font-size: 15px;
@@ -65,26 +65,40 @@
               }
             }
           }
+          .add-user-icon {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            height: 28px;
+            padding-left: 5px;
+
+            &:hover {
+              color: rgb(47, 53, 66);
+            }
+          }
         }
       }
     }
     .board-actions {
       display: flex;
-      height: 100%;
-      width: 100%;
+      width: 102%;
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
-      div.items {
-        padding: 0 8px;
-        background-color: $app-board-element-background-color;
-        border-radius: 3px;
-        &:not(:first-child) {
-          margin-left: 4px;
-        }
-        &:hover {
-          cursor: pointer;
-          background-color: $app-board-hover-icon-color;
+      div.items,
+      menu {
+        a {
+          padding: 0;
+          color: $app-board-text;
+          // background-color: $app-board-element-background-color;
+          // border-radius: 50px;
+          &:hover {
+            cursor: pointer;
+            color: $color;
+            // background-color: $app-board-hover-icon-color;
+          }
         }
       }
     }

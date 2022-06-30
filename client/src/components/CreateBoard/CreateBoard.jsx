@@ -1,17 +1,35 @@
+import React, { useState } from "react";
+import AppBar from "../BoardPage/AppBar";
+import { Card, Col, Row, Button, Modal, Form, Input } from "antd";
+import { GithubPicker } from "react-color";
+import "../../assets/scss/createboard.scss";
 import {
   CheckOutlined,
   CloseOutlined,
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Card, List, Col, Row, Button, Modal, Form, Input } from "antd";
-import React, { useState } from "react";
-import "../../assets/scss/createboard.scss";
-import AppBar from "../BoardPage/AppBar";
 
 const CreateBoard = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
+
+  const [color, setColor] = useState({
+    r: "241",
+    g: "112",
+    b: "19",
+  });
+  const [colorPickerDisplay, setColorPickerDisplay] = useState(false);
+
+  const handleColorToggleClick = () => {
+    setColorPickerDisplay({ colorPickerDisplay: !colorPickerDisplay });
+  };
+
+  const handleColorToggleClose = () => {
+    setColorPickerDisplay(false);
+  };
+
+  const handleChangeColor = (color) => setColor({ color: color.rgb });
 
   const layout = {
     labelCol: {
@@ -47,7 +65,7 @@ const CreateBoard = () => {
   };
 
   return (
-    <div className="createboard-navbar">
+    <div className="create-board-navbar">
       <AppBar />
       <div className="list-board">
         <Row gutter={16}>
@@ -101,7 +119,7 @@ const CreateBoard = () => {
                   key="submit"
                   type="primary"
                   loading={confirmModal}
-                  onClick={handleConfirm} 
+                  onClick={handleConfirm}
                   htmlType="submit"
                 >
                   <CheckOutlined />
@@ -115,8 +133,8 @@ const CreateBoard = () => {
                 validateMessage={validateMessage}
               >
                 <Form.Item
-                  name="title"
-                  label="title"
+                  name="Title"
+                  label="Title"
                   rules={[
                     {
                       required: true,
@@ -124,6 +142,19 @@ const CreateBoard = () => {
                   ]}
                 >
                   <Input />
+                </Form.Item>
+                <Form.Item name="color" label="Color">
+                  <div>
+                    <button onClick={handleColorToggleClick}>Choose one</button>
+                    {colorPickerDisplay ? (
+                      <div onClick={handleColorToggleClose}>
+                        <GithubPicker
+                          color={color}
+                          onChangeComplete={handleChangeColor}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                   <Button type="primary" htmlType="submit">

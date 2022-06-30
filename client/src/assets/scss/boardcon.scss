@@ -1,6 +1,7 @@
 @import "../../settings";
 
 .app-column-board {
+  background-color: $board-content-background-color;
   height: $board-content-height;
   display: flex;
   overflow-x: auto;

@@ -3,12 +3,13 @@ import "../../assets/scss/appboard.scss";
 import { Divider, Input, Select, Typography, Space, Avatar } from "antd";
 import { Container as BootstrapContainer, Row, Col } from "react-bootstrap";
 import {
-  BookOutlined,
   CloseOutlined,
   CoffeeOutlined,
   ContactsOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
 
 function AppBoard() {
   const { Paragraph } = Typography;
@@ -103,6 +104,14 @@ function AppBoard() {
                     src="https://picsum.photos/id/1004/200/300/?blur"
                     alt="img"
                   />
+                  <Avatar
+                    size={{
+                      sm: 32,
+                    }}
+                    alt="img"
+                  >
+                    <PlusOutlined className="add-user-icon" />
+                  </Avatar>
                 </Avatar.Group>
                 <span className="inviting">
                   <ContactsOutlined />
@@ -154,7 +163,11 @@ function AppBoard() {
           <Col sm={2} xs={12} className="col-no-padding">
             <div className="board-actions">
               <div className="items menu">
-                <BookOutlined />
+                <IconButton aria-label="delete">
+                  <a href="/create" target="_self">
+                    <DeleteIcon />
+                  </a>
+                </IconButton>
               </div>
             </div>
           </Col>
