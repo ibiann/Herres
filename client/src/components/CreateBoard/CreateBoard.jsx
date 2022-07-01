@@ -14,22 +14,19 @@ const CreateBoard = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const [color, setColor] = useState({
-    r: "241",
-    g: "112",
-    b: "19",
-  });
+  const defaultColor = { r: "241", g: "112", b: "19", a: "1" };
+  const [color, setColor] = useState(defaultColor);
   const [colorPickerDisplay, setColorPickerDisplay] = useState(false);
 
   const handleColorToggleClick = () => {
-    setColorPickerDisplay({ colorPickerDisplay: !colorPickerDisplay });
+    setColorPickerDisplay(!colorPickerDisplay);
   };
 
   const handleColorToggleClose = () => {
     setColorPickerDisplay(false);
   };
 
-  const handleChangeColor = (color) => setColor({ color: color.rgb });
+  const handleChangeColor = (color) => setColor(color.rgb);
 
   const layout = {
     labelCol: {
@@ -145,12 +142,12 @@ const CreateBoard = () => {
                 </Form.Item>
                 <Form.Item name="color" label="Color">
                   <div>
-                    <button onClick={handleColorToggleClick}>Choose one</button>
+                    <div onClick={handleColorToggleClick}>Choose one</div>
                     {colorPickerDisplay ? (
                       <div onClick={handleColorToggleClose}>
                         <GithubPicker
                           color={color}
-                          onChangeComplete={handleChangeColor}
+                          onChange={handleChangeColor}
                         />
                       </div>
                     ) : null}
