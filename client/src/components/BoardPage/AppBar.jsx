@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import "../../assets/scss/appbar.scss";
-import { Container as BootstrapContainer, Row, Col } from "react-bootstrap";
-import { cloneDeep } from "lodash";
-import SettingBox from "../Modal/SettingBox";
-import { MODAL_CONFIRM } from "../../util/const";
-import { Dropdown, Menu, Tooltip, Button, Input } from "antd";
-import logo from "../../assets/img/logo.png";
+import React, { useState } from 'react'
+import '../../assets/scss/appbar.scss'
+import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
+import { cloneDeep } from 'lodash'
+import SettingBox from '../Modal/SettingBox'
+import { MODAL_CONFIRM } from '../../util/const'
+import { Dropdown, Menu, Tooltip, Button, Input } from 'antd'
+import logo from '../../assets/img/logo.png'
+
 import {
   HomeFilled,
   ProjectOutlined,
@@ -14,88 +15,95 @@ import {
   RetweetOutlined,
   IdcardOutlined,
   SearchOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom'
 
 function AppBar() {
   // const { Search } = Input
   const onSearch = (value) => {
-    return value;
-  };
+    return value
+  }
+  const navigate = useNavigate()
   // const handleBtnClick = (e) => {
   //   message.info("Click to search.");
   //   return "click", e;
   // };
-  const [showSettingBox, setshowSettingBox] = useState(false);
+  const [showSettingBox, setshowSettingBox] = useState(false)
   const toggleShowSettingBox = () => {
-    setshowSettingBox(!showSettingBox);
-  };
+    setshowSettingBox(!showSettingBox)
+  }
 
   const onSettingAction = (type) => {
     if (type === MODAL_CONFIRM) {
-      console.log("");
+      console.log('')
     }
-    toggleShowSettingBox();
-  };
+    toggleShowSettingBox()
+  }
 
-  const [handleLoading, setHandleLoading] = useState([]);
+  const [handleLoading, setHandleLoading] = useState([])
 
   const handleEnterLoading = (index) => {
     setHandleLoading((handlePrevLoading) => {
-      const enterNewLoading = cloneDeep(handlePrevLoading);
-      enterNewLoading[index] = true;
-      return enterNewLoading;
-    });
+      const enterNewLoading = cloneDeep(handlePrevLoading)
+      enterNewLoading[index] = true
+      return enterNewLoading
+    })
     setTimeout(() => {
       setHandleLoading((handlePrevLoading) => {
-        const enterNewLoading = cloneDeep(handlePrevLoading);
-        enterNewLoading[index] = false;
-        return enterNewLoading;
-      });
-    }, 5000);
-  };
+        const enterNewLoading = cloneDeep(handlePrevLoading)
+        enterNewLoading[index] = false
+        return enterNewLoading
+      })
+    }, 5000)
+  }
 
   const menuAva = (
     <Menu>
       <Menu.Item key="1" onClick={toggleShowSettingBox}>
         <IdcardOutlined
           style={{
-            color: "rgb(83, 82, 237)",
-            justifyContent: "center",
-            alignItems: "center",
-            marginRight: "8px",
+            color: 'rgb(83, 82, 237)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: '8px',
           }}
         />
         <span>Settings</span>
       </Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item
+        key="2"
+        onClick={() => {
+          localStorage.removeItem('auth')
+          navigate(0)
+          navigate('/', { replace: true })
+        }}
+      >
         <LoginOutlined
           style={{
-            color: "rgb(255, 71, 87)",
-            justifyContent: "center",
-            alignItems: "center",
-            marginRight: "8px",
+            color: 'rgb(255, 71, 87)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: '8px',
           }}
         />
-        <a href="/login" target="_self">
         <span>Log out</span>
-        </a>
       </Menu.Item>
     </Menu>
-  );
+  )
 
   const recBoardMenu = (
     <Menu
       items={[
         {
-          key: "1",
+          key: '1',
           label: <span className="">Recent Boards</span>,
           icon: <RetweetOutlined />,
         },
         {
-          type: "divider",
+          type: 'divider',
         },
         {
-          key: "2",
+          key: '2',
           label: (
             <a href="#" target="_blank" rel="noopener noreferrer">
               Custom Board 1
@@ -103,7 +111,7 @@ function AppBar() {
           ),
         },
         {
-          key: "3",
+          key: '3',
           label: (
             <a href="#" target="_blank" rel="noopener noreferrer">
               Custom Board 2
@@ -112,7 +120,7 @@ function AppBar() {
         },
       ]}
     />
-  );
+  )
 
   return (
     <nav className="app-navbar-top">
@@ -121,14 +129,14 @@ function AppBar() {
           <Col xs={6} md={4} className="col-no-padding">
             <div className="action-apps">
               <div className="items-left home">
-                <a href={"/create"} target="_self">
+                <a href={'/create'} target="_self">
                   <HomeFilled />
                 </a>
               </div>
               <div className="items-left recent-boards">
                 <Dropdown
                   overlay={recBoardMenu}
-                  trigger={["click"]}
+                  trigger={['click']}
                   className="rec-board-dropdown"
                 >
                   <a onClick={(e) => e.preventDefault()}>
@@ -148,7 +156,7 @@ function AppBar() {
                   <Input
                     placeholder="Search here...."
                     allowClear={{
-                      clearIcon: <CloseOutlined style={{ color: "#e74c3c" }} />,
+                      clearIcon: <CloseOutlined style={{ color: '#e74c3c' }} />,
                     }}
                     onSearch={onSearch}
                     style={{
@@ -200,7 +208,7 @@ function AppBar() {
       </BootstrapContainer>
       <SettingBox show={showSettingBox} onAction={onSettingAction} />
     </nav>
-  );
+  )
 }
 
-export default AppBar;
+export default AppBar

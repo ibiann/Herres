@@ -1,17 +1,19 @@
-import express from "express";
-import { BoardController } from "../../controllers/board.controller";
-import { BoardValidation } from "../../validation/board.validation";
+import express from 'express'
+import { BoardController } from '../../controllers/board.controller'
+import verifyMiddleware from '../../middlewares/verify'
+import { BoardValidation } from '../../validation/board.validation'
 
-const router = express.Router();
-
+const router = express.Router()
+router.use(verifyMiddleware)
 router
-  .route("/")
+  .route('/')
   //   .get((req, res) => console.log("GET boards"))
-  .post(BoardValidation.createNew, BoardController.createNew);
+  .get(BoardController.getAll)
+  .post(BoardValidation.createNew, BoardController.createNew)
 
 router
   .route('/:id')
   .get(BoardController.getFullBoard)
-  .put(BoardValidation.update, BoardController.update);
+  .put(BoardValidation.update, BoardController.update)
 
 export const boardRoutes = router

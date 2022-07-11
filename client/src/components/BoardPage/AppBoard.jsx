@@ -1,46 +1,46 @@
-import React, { useState } from "react";
-import "../../assets/scss/appboard.scss";
-import { Divider, Input, Select, Typography, Space, Avatar } from "antd";
-import { Container as BootstrapContainer, Row, Col } from "react-bootstrap";
+import React, { useState, useContext } from 'react'
+import '../../assets/scss/appboard.scss'
+import { Divider, Input, Select, Typography, Space, Avatar } from 'antd'
+import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
 import {
   CloseOutlined,
   CoffeeOutlined,
   ContactsOutlined,
   PlusOutlined,
-} from "@ant-design/icons";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton } from "@mui/material";
+} from '@ant-design/icons'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { IconButton } from '@mui/material'
 
 function AppBoard() {
-  const { Paragraph } = Typography;
-  const { Option } = Select;
+  const { Paragraph } = Typography
+  const { Option } = Select
 
-  const [lengthLimitText, setLengthLimitText] = useState("Custom Board");
-  const [itemDropDownList, SetItemDropDownList] = useState([]);
-  const [nameItemList, setNameItemList] = useState("");
+  const [lengthLimitText, setLengthLimitText] = useState('Custom Board')
+  const [itemDropDownList, SetItemDropDownList] = useState([])
+  const [nameItemList, setNameItemList] = useState('')
 
-  const [uploadingFile, setUploadingFile] = useState(null);
+  const [uploadingFile, setUploadingFile] = useState(null)
 
   const handleChangeUpload = function loadFile(e) {
     if (e.target.files.length > 0) {
-      const uploadingFile = URL.createObjectURL(e.target.files[0]);
-      setUploadingFile(uploadingFile);
+      const uploadingFile = URL.createObjectURL(e.target.files[0])
+      setUploadingFile(uploadingFile)
     }
-  };
+  }
 
   const onNameItemListChange = (e) => {
-    setNameItemList(e.target.value);
-  };
+    setNameItemList(e.target.value)
+  }
 
   const addItem = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     SetItemDropDownList([
       ...itemDropDownList,
       // eslint-disable-next-line no-undef
       nameItemList || `No title ${index++}`,
-    ]);
-    setNameItemList("");
-  };
+    ])
+    setNameItemList('')
+  }
 
   return (
     <nav className="app-navbar-board">
@@ -59,7 +59,7 @@ function AppBoard() {
                   margin: 8,
                   marginLeft: 12,
                   padding: 2,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                 }}
                 editable={{
                   onChange: setLengthLimitText,
@@ -131,12 +131,12 @@ function AppBoard() {
                   dropdownRender={(menu) => (
                     <>
                       {menu}
-                      <Divider style={{ margin: "8px 0" }} />
-                      <Space align="center" style={{ padding: "0 8px 4px" }}>
+                      <Divider style={{ margin: '8px 0' }} />
+                      <Space align="center" style={{ padding: '0 8px 4px' }}>
                         <Input
                           allowClear={{
                             clearIcon: (
-                              <CloseOutlined style={{ color: "#e74c3c" }} />
+                              <CloseOutlined style={{ color: '#e74c3c' }} />
                             ),
                           }}
                           placeholder="Please enter the email"
@@ -145,9 +145,9 @@ function AppBoard() {
                         />
                         <Typography.Link
                           onClick={addItem}
-                          style={{ whitespace: "nowrap", padding: 2 }}
+                          style={{ whitespace: 'nowrap', padding: 2 }}
                         >
-                          <PlusOutlined style={{ color: "#4E89FF" }} />
+                          <PlusOutlined style={{ color: '#4E89FF' }} />
                         </Typography.Link>
                       </Space>
                     </>
@@ -174,7 +174,7 @@ function AppBoard() {
         </Row>
       </BootstrapContainer>
     </nav>
-  );
+  )
 }
 
-export default AppBoard;
+export default AppBoard

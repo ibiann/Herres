@@ -1,53 +1,52 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Container, Draggable } from "react-smooth-dnd";
-import { Dropdown, Form, Button } from "react-bootstrap";
-import "../../assets/scss/column.scss";
-import { cloneDeep } from "lodash";
-import Card from "../BoardComponent/Card";
-import Remove from "../Modal/Remove";
-import { mapOrder } from "../../util/sort";
-import { MODAL_CONFIRM } from "../../util/const";
+import React, { useEffect, useRef, useState } from 'react'
+import { Container, Draggable } from 'react-smooth-dnd'
+import { Dropdown, Form, Button } from 'react-bootstrap'
+import '../../assets/scss/column.scss'
+import { cloneDeep } from 'lodash'
+import Card from '../BoardComponent/Card'
+import Remove from '../Modal/Remove'
+import { mapOrder } from '../../util/sort'
+import { MODAL_CONFIRM } from '../../util/const'
 import {
   selectAllTextField,
   useKeyBoardToSaveTitle,
-} from "../../util/contentEditable";
-import { createCard, updateColumn } from "../../actions/api";
+} from '../../util/contentEditable'
+import { createCard, updateColumn } from '../../api'
 
 import {
   CloseCircleOutlined,
   MenuOutlined,
   PlusCircleOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
 function Column(props) {
-  const { column, onCardDrop, onUpdateListColumn } = props;
-  const cards = mapOrder(column.cards, column.cardOrder, "_id");
+  const { column, onCardDrop, onUpdateListColumn } = props
+  const cards = mapOrder(column.cards, column.cardOrder, '_id')
 
-  const [showConfirmRemove, setShowConfirmRemove] = useState(false);
-  const toggleShowConfirmRemove = () =>
-    setShowConfirmRemove(!showConfirmRemove);
+  const [showConfirmRemove, setShowConfirmRemove] = useState(false)
+  const toggleShowConfirmRemove = () => setShowConfirmRemove(!showConfirmRemove)
 
-  const [listTitle, setListTitle] = useState("");
-  const handleListTitleChange = (e) => setListTitle(e.target.value);
+  const [listTitle, setListTitle] = useState('')
+  const handleListTitleChange = (e) => setListTitle(e.target.value)
 
-  const [openNewCardForm, setOpenNewCardForm] = useState(false);
-  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
+  const [openNewCardForm, setOpenNewCardForm] = useState(false)
+  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
 
-  const newCardInputTextRef = useRef(null);
+  const newCardInputTextRef = useRef(null)
 
-  const [newCardTitle, setNewCardTitle] = useState("");
-  const onNewCardTitleChange = (e) => setNewCardTitle(e.target.value);
+  const [newCardTitle, setNewCardTitle] = useState('')
+  const onNewCardTitleChange = (e) => setNewCardTitle(e.target.value)
 
   useEffect(() => {
-    setListTitle(column.title);
-  }, [column.title]);
+    setListTitle(column.title)
+  }, [column.title])
 
   useEffect(() => {
     if (newCardInputTextRef && newCardInputTextRef.current) {
-      newCardInputTextRef.current.focus();
-      newCardInputTextRef.current.select();
+      newCardInputTextRef.current.focus()
+      newCardInputTextRef.current.select()
     }
-  }, [openNewCardForm]);
+  }, [openNewCardForm])
 
   // Remove Column
   const onRemoveAction = (type) => {
@@ -55,14 +54,14 @@ function Column(props) {
       const newColumn = {
         ...column,
         _destroy: true,
-      };
+      }
       // Call Api update column
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
-        onUpdateListColumn(updatedColumn);
-      });
+        onUpdateListColumn(updatedColumn)
+      })
     }
-    toggleShowConfirmRemove();
-  };
+    toggleShowConfirmRemove()
+  }
 
   // Update Column Title
   const handleTitleBlur = () => {
@@ -70,37 +69,37 @@ function Column(props) {
       const newColumn = {
         ...column,
         title: listTitle,
-      };
+      }
       // Call Api update column
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
-        updatedColumn.cards = newColumn.cards;
-        onUpdateListColumn(updatedColumn);
-      });
+        updatedColumn.cards = newColumn.cards
+        onUpdateListColumn(updatedColumn)
+      })
     }
-  };
+  }
 
   const addNewCard = () => {
     if (!newCardTitle) {
-      newCardInputTextRef.current.focus();
-      return;
+      newCardInputTextRef.current.focus()
+      return
     }
     //copy same path from content of adding new card
     const newCardToAdd = {
       columnId: column._id,
       boardId: column.boardId,
       title: newCardTitle.trim(),
-    };
+    }
     // Call Api cards
     createCard(newCardToAdd).then((card) => {
-      let newColumn = cloneDeep(column);
-      newColumn.cards.push(card);
-      newColumn.cardOrder.push(card._id);
+      let newColumn = cloneDeep(column)
+      newColumn.cards.push(card)
+      newColumn.cardOrder.push(card._id)
 
-      onUpdateListColumn(newColumn);
-      setNewCardTitle("");
-      toggleOpenNewCardForm();
-    });
-  };
+      onUpdateListColumn(newColumn)
+      setNewCardTitle('')
+      toggleOpenNewCardForm()
+    })
+  }
 
   return (
     <div className="columns">
@@ -151,7 +150,7 @@ function Column(props) {
           dropPlaceholder={{
             animationDuration: 150,
             showOnTop: true,
-            className: "card-drop-view",
+            className: 'card-drop-view',
           }}
           dropPlaceholderAnimationDuration={200}
         >
@@ -174,7 +173,7 @@ function Column(props) {
               ref={newCardInputTextRef}
               value={newCardTitle}
               onChange={onNewCardTitleChange}
-              onKeyDown={(e) => e.key === "Enter" && addNewCard()}
+              onKeyDown={(e) => e.key === 'Enter' && addNewCard()}
             />
           </div>
         )}
@@ -207,7 +206,7 @@ function Column(props) {
         content={`Removing current ${column.title} ???`}
       />
     </div>
-  );
+  )
 }
 
-export default Column;
+export default Column

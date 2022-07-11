@@ -1,16 +1,25 @@
-import { BoardModel } from "../models/board.model";
-import { cloneDeep } from 'lodash';
+import { BoardModel } from '../models/board.model'
+import { cloneDeep } from 'lodash'
 
 const createNew = async (data) => {
   try {
     const createdBoard = await BoardModel.createNew(data)
-    const getNewBoard = await BoardModel.findOneById(createdBoard.insertedId.toString())
+    const getNewBoard = await BoardModel.findOneById(
+      createdBoard.insertedId.toString()
+    )
     return getNewBoard
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error)
   }
 }
-
+const getAll = async (user_id) => {
+  try {
+    const boards = await BoardModel.getAll(user_id)
+    return boards
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 const update = async (id, data) => {
   try {
     const updateData = {
@@ -22,15 +31,15 @@ const update = async (id, data) => {
 
     const updatedBoard = await BoardModel.update(id, updateData)
 
-    return updatedBoard;
+    return updatedBoard
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error)
   }
-};
+}
 
 const getFullBoard = async (boardId) => {
   try {
-    const board = await BoardModel.getFullBoard(boardId);
+    const board = await BoardModel.getFullBoard(boardId)
 
     if (!board || !board.columns) {
       throw new Error('Board not found!!! SOS')
@@ -38,21 +47,25 @@ const getFullBoard = async (boardId) => {
 
     const transformBoard = cloneDeep(board)
     /* Filter deleted columns */
-    transformBoard.columns = transformBoard.columns.filter(column => !column._destroy)
+    transformBoard.columns = transformBoard.columns.filter(
+      (column) => !column._destroy
+    )
 
     // Add cards to the columns
-    transformBoard.columns.forEach(column => {
-      column.cards = transformBoard.cards.filter(c => c.columnId.toString() === column._id.toString())
+    transformBoard.columns.forEach((column) => {
+      column.cards = transformBoard.cards.filter(
+        (c) => c.columnId.toString() === column._id.toString()
+      )
     })
-    
+
     // sort the column order, card order
     // Remove cards data from boards
     delete transformBoard.cards
-    
-    return transformBoard;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
 
-export const BoardService = { createNew, update, getFullBoard };
+    return transformBoard
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const BoardService = { createNew, update, getFullBoard, getAll }

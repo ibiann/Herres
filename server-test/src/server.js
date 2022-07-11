@@ -1,36 +1,37 @@
-import express from "express";
-import cors from "cors";
+import express from 'express'
+import cors from 'cors'
 import { corsOptions } from './config/cors'
-import { connectDB } from "./config/mongodb";
-import { env } from "./config/environment";
-import { apiV1 } from "./routes/v1";
+import { connectDB } from './config/mongodb'
+import { env } from './config/environment'
+import { apiV1 } from './routes/v1'
 
 // name: trungpc pass: 3m5HLI1UyIkaitv6
 // name: test pass: UZnp6F3ePfsumtUU
 // name: trunglap pass: vItfAp9Su0DS2nL7
- 
+
 connectDB()
-  .then(() => console.log("Connected successfully!!!"))
+  .then(() => console.log('Connected successfully!!!'))
   .then(() => rootServer())
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    console.error(error)
+    process.exit(1)
+  })
 
 const rootServer = () => {
-  const app = express();
+  const app = express()
 
   app.use(cors(corsOptions))
 
   // enable req.body data
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }))
+  app.use(express.urlencoded({ limit: '50mb' }))
 
   // use api v1
-  app.use("/v1", apiV1);
+  app.use('/v1', apiV1)
 
-  connectDB().catch(console.log);
+  connectDB().catch(console.log)
 
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`hello, this is ${env.APP_HOST}:${env.APP_PORT}/`);
-  });
-};
+  app.listen(env.APP_PORT, () => {
+    console.log(`hello, this is ${env.APP_HOST}:${env.APP_PORT}/`)
+  })
+}

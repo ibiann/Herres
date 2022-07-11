@@ -19,7 +19,7 @@ const Home = () => {
           </div>
           <div className="header-top-right">
             <div className="">
-              <a href="#">Log in</a>
+              <a href="login">Log in</a>
               <button
                 className="btn btn-primary"
                 type="submit"

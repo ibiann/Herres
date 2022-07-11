@@ -1,7 +1,7 @@
-import React from "react";
-import "./App.scss";
-import AppRouter from "./router";
-import { Outlet } from "react-router-dom";
+import React from 'react'
+import './App.scss'
+import AppRouter from './routes/router'
+import { Outlet } from 'react-router-dom'
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <AppRouter />
       <Outlet />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
