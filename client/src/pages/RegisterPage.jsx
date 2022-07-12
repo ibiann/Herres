@@ -1,11 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
 import { Button, Input, Typography, message } from 'antd'
-import { Box, Link, Paper } from '@mui/material'
+import { Box, Paper } from '@mui/material'
 import logo from '../assets/img/logo.png'
 import { Controller, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import http from '../config/http'
+import { Link, useNavigate } from 'react-router-dom'
 import { registerApi } from '../api/auth'
 import { getHttpResponse } from '../util/http'
 
@@ -72,7 +71,6 @@ const RegisterPage = () => {
       const data = await registerApi(form)
       localStorage.setItem('auth', JSON.stringify(data))
       message.success('Register Succesfully')
-      navigate(0)
       navigate('/board')
     } catch (error) {
       const data = getHttpResponse(error)
@@ -154,7 +152,7 @@ const RegisterPage = () => {
             Complete
           </Button>
           <hr />
-          <Link href={'/login'}>Already have a account? Log in</Link>
+          <Link to="/login">Already have a account? Log in</Link>
         </form>
       </Paper>
     </Box>

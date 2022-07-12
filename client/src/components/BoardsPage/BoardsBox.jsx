@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import AppBar from '../BoardPage/AppBar'
+import React, { useState, useEffect } from "react";
+import AppBar from "../BoardPage/AppBar";
 import {
   Card,
   Col,
@@ -11,38 +11,38 @@ import {
   Upload,
   message,
   Spin,
-} from 'antd'
-import '../../assets/scss/createboard.scss'
+} from "antd";
+import "../../assets/scss/createboard.scss";
 import {
   CheckOutlined,
   CloseOutlined,
   PlusOutlined,
   SettingOutlined,
   LoadingOutlined,
-} from '@ant-design/icons'
-import 'rc-color-picker/assets/index.css'
-import ColorPicker from 'rc-color-picker'
-import { getBase64, beforeUpload } from '../../util/upload'
+} from "@ant-design/icons";
+import "rc-color-picker/assets/index.css";
+import { getBase64, beforeUpload } from "../../util/upload";
 
-import { HexColorPicker } from 'react-colorful'
-import { createBoard, getBoards } from '../../api/board'
-import { getHttpResponse } from '../../util/http'
-import { useNavigate } from 'react-router-dom'
-const CreateBoard = () => {
-  const navigate = useNavigate()
-  const [modalVisible, setModalVisible] = useState(false)
-  const [confirmModal, setConfirmModal] = useState(false)
-  const [form] = Form.useForm()
-  const defaultColor = '#aabbcc'
-  const [color, setColor] = useState(defaultColor)
-  const [loading, setLoading] = useState(false)
-  const [spinLoading, setSpinLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState()
-  const [boards, setBoards] = useState([])
+import { HexColorPicker } from "react-colorful";
+import { createBoard, getBoards } from "../../api/board";
+import { getHttpResponse } from "../../util/http";
+import { Link, useNavigate } from "react-router-dom";
+
+const BoardsBox = () => {
+  const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [form] = Form.useForm();
+  const defaultColor = "#aabbcc";
+  const [color, setColor] = useState(defaultColor);
+  const [loading, setLoading] = useState(false);
+  const [spinLoading, setSpinLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
+  const [boards, setBoards] = useState([]);
   const handleChangeColor = (color) => {
-    setColor(color)
-    form.setFieldsValue({ color })
-  }
+    setColor(color);
+    form.setFieldsValue({ color });
+  };
 
   const layout = {
     labelCol: {
@@ -51,51 +51,54 @@ const CreateBoard = () => {
     wrapperCol: {
       span: 16,
     },
-  }
+  };
 
   const showModal = () => {
-    setModalVisible(true)
-  }
+    setModalVisible(true);
+  };
 
   const handleConfirm = () => {
-    setConfirmModal(true)
+    setConfirmModal(true);
     form
-      .validateFields(['title', 'image'])
+      .validateFields(["title", "image"])
       .then(() => {
-        form.submit()
-        navigate(0)
-        setModalVisible(false)
-        setConfirmModal(false)
+        form.submit();
+        navigate(0);
+        setModalVisible(false);
+        setConfirmModal(false);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   const handleCancel = () => {
-    setModalVisible(false)
-  }
+    setModalVisible(false);
+  };
 
   const validateMessage = {
-    required: '${label} is required!',
-  }
+    required: "${label} is required!",
+  };
+
   const onFinishModal = async (values) => {
     try {
-      const data = await createBoard(values)
-      message.success('created successfully')
+      const data = await createBoard(values);
+      message.success("created successfully");
     } catch (error) {
-      const data = getHttpResponse(error)
-      message.error(data)
+      const data = getHttpResponse(error);
+      message.error(data);
     }
-  }
+  };
+
   const handleChange = (info) => {
-    const imgURL = URL.createObjectURL(info.file)
-    console.log(info.file)
+    const imgURL = URL.createObjectURL(info.file);
+    console.log(info.file);
     getBase64(info.file, (base64Data) => {
-      form.setFieldsValue({ image: base64Data })
-    })
-    setImageUrl(imgURL)
-  }
+      form.setFieldsValue({ image: base64Data });
+    });
+    setImageUrl(imgURL);
+  };
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -107,21 +110,24 @@ const CreateBoard = () => {
         Upload
       </div>
     </div>
-  )
-  console.log(modalVisible)
+  );
+
   useEffect(() => {
     const getBoardsApi = async () => {
-      setSpinLoading(true)
+      setSpinLoading(true);
+
       try {
-        const data = await getBoards()
-        setSpinLoading(false)
-        setBoards(data)
+        const data = await getBoards();
+        setSpinLoading(false);
+        setBoards(data);
       } catch (error) {
-        message.error(error)
+        setSpinLoading(false);
+        message.error(error);
       }
-    }
-    getBoardsApi()
-  }, [modalVisible])
+    };
+    getBoardsApi();
+  }, [modalVisible]);
+
   return (
     <Spin spinning={spinLoading} size="large">
       <div className="create-board-navbar">
@@ -129,18 +135,13 @@ const CreateBoard = () => {
         <div className="list-board">
           <Row gutter={16}>
             {boards.map((board, index) => (
-              <Col key={index} className="list-board__item">
-                <Card cover={<img alt="board" src={board.image} />}>
-                  <a
-                    href={`boards/${board._id}`}
-                    target="_self"
-                    rel="noopener noreferrer"
-                    style={{ color: `${board.color}` }}
-                  >
+              <Col md={6} key={index} className="list-board__item">
+                <Link to={`boards/${board._id}`}>
+                  <Card cover={<img alt="board" src={board.image} />}>
                     <p>{board.title}</p>
                     <SettingOutlined style={{ color: `${board.color}` }} />
-                  </a>
-                </Card>
+                  </Card>
+                </Link>
               </Col>
             ))}
 
@@ -193,7 +194,7 @@ const CreateBoard = () => {
                   >
                     <Input
                       onChange={(e) => {
-                        form.setFieldsValue('title', e.target.value)
+                        form.setFieldsValue("title", e.target.value);
                       }}
                     />
                   </Form.Item>
@@ -207,7 +208,7 @@ const CreateBoard = () => {
                     ]}
                     // initialValue={color}
                   >
-                    <div style={{ margin: '6px 0 0 0' }}>
+                    <div style={{ margin: "6px 0 0 0" }}>
                       <HexColorPicker
                         color={color}
                         onChange={handleChangeColor}
@@ -228,7 +229,7 @@ const CreateBoard = () => {
                           src={imageUrl}
                           alt="avatar"
                           style={{
-                            width: '50px',
+                            width: "50px",
                           }}
                         />
                       ) : (
@@ -243,7 +244,7 @@ const CreateBoard = () => {
         </div>
       </div>
     </Spin>
-  )
-}
+  );
+};
 
-export default CreateBoard
+export default BoardsBox;

@@ -1,12 +1,14 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
-import { Button, Input, Typography, message } from 'antd'
-import { Box, Link, Paper } from '@mui/material'
-import { useForm, Controller } from 'react-hook-form'
+import { Typography, message } from 'antd'
+import { Box, Paper } from '@mui/material'
+import { useForm } from 'react-hook-form'
 import logo from '../assets/img/svg/logo.svg'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginApi } from '../api/auth'
 import { getHttpResponse } from '../util/http'
+import * as Yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const useStyle = makeStyles({
   loginFormContainer: {
@@ -57,15 +59,21 @@ const useStyle = makeStyles({
 const LoginPage = () => {
   const classes = useStyle()
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm({
-    defaultValues: { email: '', password: '' },
-  })
 
-  const submitLogin = async (form) => {
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Email is error format').required('Email is required'),
+    password: Yup.string().required('Password is required').min(6).max(22)
+  });
+
+  const formOptions = { resolver: yupResolver(validationSchema) };
+  const { register, handleSubmit, setError, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  const onSubmit = async (formData) => {
     try {
-      const data = await loginApi(form)
+      const data = await loginApi(formData)
       localStorage.setItem('auth', JSON.stringify(data))
-      message.success('Login Succesfully')
+      message.success('Login Successfully')
       navigate(0)
       navigate('/board')
     } catch (error) {
@@ -83,41 +91,24 @@ const LoginPage = () => {
       </Box>
       <Paper className={classes.loginFormContainer}>
         <Typography className={classes.loginTitle}>Login to Trello</Typography>
-        <form>
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                className={classes.input}
-                placeholder={'Enter email'}
-                type={'email'}
-              />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                className={classes.input}
-                placeholder={'Enter password'}
-                type={'password'}
-              />
-            )}
-          />
-
-          <Button
-            onClick={handleSubmit(submitLogin)}
-            className={classes.loginButton}
-          >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-group">
+            <label>Username</label>
+            <input name="email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.email?.message}</div>
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input name="password" type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+          <button disabled={formState.isSubmitting} className="btn btn-primary w-100">
+            {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
             Login
-          </Button>
-          <hr />
-          <Link href={'/register'}>Sign up for an account</Link>
+          </button>
         </form>
+        <hr />
+        <Link to="/register">Sign up for an account</Link>
       </Paper>
     </Box>
   )

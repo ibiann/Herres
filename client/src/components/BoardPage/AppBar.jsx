@@ -20,17 +20,20 @@ import { Link, useNavigate } from 'react-router-dom'
 
 function AppBar() {
   // const { Search } = Input
-  const onSearch = (value) => {
-    return value
+  const onSearch = (event) => {
+    console.log(event);
+    const { value } = event.target;
+    console.log('value', value);
   }
+
   const navigate = useNavigate()
   // const handleBtnClick = (e) => {
   //   message.info("Click to search.");
   //   return "click", e;
   // };
-  const [showSettingBox, setshowSettingBox] = useState(false)
+  const [showSettingBox, setShowSettingBox] = useState(false)
   const toggleShowSettingBox = () => {
-    setshowSettingBox(!showSettingBox)
+    setShowSettingBox(!showSettingBox)
   }
 
   const onSettingAction = (type) => {
@@ -158,7 +161,7 @@ function AppBar() {
                     allowClear={{
                       clearIcon: <CloseOutlined style={{ color: '#e74c3c' }} />,
                     }}
-                    onSearch={onSearch}
+                    onchange={onSearch}
                     style={{
                       width: 200,
                     }}

@@ -1,6 +1,7 @@
 export const getHttpResponse = (response) => {
   return response.response.data
 }
+
 export const setAuthHttp = (axios, token) => {
   console.log(token)
   if (token)

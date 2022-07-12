@@ -1,5 +1,4 @@
-@import "../../settings";
-
+@import 'settings';
 $column-height: calc(#{$board-content-height} - #{$gap * 2});
 
 .columns {

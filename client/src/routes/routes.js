@@ -1,7 +1,7 @@
 import LoginPage from './../pages/LoginPage'
 import RegisterPage from './../pages/RegisterPage'
 import BoardPage from './../pages/BoardPage'
-import CreateBoardPage from './../pages/CreateBoardPage'
+import BoardsPage from './../pages/BoardsPage'
 import HomePage from './../pages/HomePage'
 import PublicRouter from './../routes/publicRouter'
 import PrivateRouter from './protectedRouter'
@@ -15,10 +15,10 @@ export const routes = [
     ),
   },
   {
-    path: '/create',
+    path: '/boards',
     element: (
       <PrivateRouter>
-        <CreateBoardPage />
+        <BoardsPage />
       </PrivateRouter>
     ),
   },
