@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../assets/scss/appbar.scss'
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
 import { cloneDeep } from 'lodash'
@@ -18,8 +18,9 @@ import {
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 
-function AppBar() {
+function AppBar({ boards }) {
   // const { Search } = Input
+  const [recentBoards, setRecentBoards] = useState(boards)
   const onSearch = (value) => {
     return value
   }
@@ -91,37 +92,15 @@ function AppBar() {
     </Menu>
   )
 
-  const recBoardMenu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <span className="">Recent Boards</span>,
-          icon: <RetweetOutlined />,
-        },
-        {
-          type: 'divider',
-        },
-        {
-          key: '2',
-          label: (
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              Custom Board 1
-            </a>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              Custom Board 2
-            </a>
-          ),
-        },
-      ]}
-    />
-  )
+  console.log(recentBoards)
 
+  // const recBoardMenu = (
+
+  // )
+  useEffect(() => {
+    const s = boards.sort((a, b) => b.createdAt - a.createdAt).slice(0, 3)
+    setRecentBoards(s)
+  }, [])
   return (
     <nav className="app-navbar-top">
       <BootstrapContainer className="appbar-container">
@@ -135,7 +114,24 @@ function AppBar() {
               </div>
               <div className="items-left recent-boards">
                 <Dropdown
-                  overlay={recBoardMenu}
+                  overlay={
+                    <Menu
+                      items={recentBoards.map((r, index) => {
+                        return {
+                          key: index,
+                          label: (
+                            <a
+                              href="#"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {r.title}
+                            </a>
+                          ),
+                        }
+                      })}
+                    />
+                  }
                   trigger={['click']}
                   className="rec-board-dropdown"
                 >

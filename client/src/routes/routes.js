@@ -39,7 +39,7 @@ export const routes = [
     ),
   },
   {
-    path: '/board',
+    path: '/board/:id',
     element: (
       <PrivateRouter>
         <BoardPage />
