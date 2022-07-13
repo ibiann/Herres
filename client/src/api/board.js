@@ -21,3 +21,10 @@ export const getBoards = async () => {
   const response = await axios.get(`${API_ROOT}/v1/boards`)
   return response.data
 }
+export const getBoardsRecent = async (num) => {
+  console.log(axios.defaults.headers.common)
+  const response = await axios.get(`${API_ROOT}/v1/boards`, {
+    params: { recent: num },
+  })
+  return response.data
+}

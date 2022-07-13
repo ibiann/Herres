@@ -44,9 +44,13 @@ const getFullBoard = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
+  const { recent } = req.query
   try {
     const { user_id } = res.locals
-    const result = await BoardService.getAll(user_id)
+    let result = await BoardService.getAll(user_id)
+    if (parseInt(recent) > 0) {
+      result = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, recent)
+    }
     res.status(HttpStatusCode.OK).json(result)
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({

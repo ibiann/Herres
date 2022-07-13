@@ -148,6 +148,7 @@ function BoardCon() {
 
   const onUpdateListColumn = (newUpdateColumn) => {
     const columnIdUpdater = newUpdateColumn._id
+    console.log(newUpdateColumn)
 
     let newColumns = cloneDeep(columns)
     const columnIndexUpdater = newColumns.findIndex(

@@ -5,11 +5,10 @@ import useApp from '../util/getContext'
 function PublicRouter({ children }) {
   const { auth, setAuth } = useApp()
   if (auth) {
-    return <Navigate to="/board" />
+    return <Navigate to="/boards" />
   }
 
   return children
 }
-
 
 export default PublicRouter

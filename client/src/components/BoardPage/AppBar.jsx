@@ -17,21 +17,20 @@ import {
   SearchOutlined,
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
+import useApp from '../../util/getContext'
+import { getBoardsRecent } from '../../api/board'
 
 function AppBar({ boards }) {
   // const { Search } = Input
-  const [recentBoards, setRecentBoards] = useState(boards)
+  const [recentBoards, setRecentBoards] = useState([])
   const onSearch = (value) => {
     return value
   }
+
   const navigate = useNavigate()
-  // const handleBtnClick = (e) => {
-  //   message.info("Click to search.");
-  //   return "click", e;
-  // };
-  const [showSettingBox, setshowSettingBox] = useState(false)
+  const [showSettingBox, setShowSettingBox] = useState(false)
   const toggleShowSettingBox = () => {
-    setshowSettingBox(!showSettingBox)
+    setShowSettingBox(!showSettingBox)
   }
 
   const onSettingAction = (type) => {
@@ -57,7 +56,13 @@ function AppBar({ boards }) {
       })
     }, 5000)
   }
-
+  useEffect(() => {
+    const getBoardsRecentApi = async () => {
+      const data = await getBoardsRecent(3)
+      setRecentBoards(data)
+    }
+    getBoardsRecentApi()
+  }, [])
   const menuAva = (
     <Menu>
       <Menu.Item key="1" onClick={toggleShowSettingBox}>
@@ -91,16 +96,6 @@ function AppBar({ boards }) {
       </Menu.Item>
     </Menu>
   )
-
-  console.log(recentBoards)
-
-  // const recBoardMenu = (
-
-  // )
-  useEffect(() => {
-    const s = boards.sort((a, b) => b.createdAt - a.createdAt).slice(0, 3)
-    setRecentBoards(s)
-  }, [])
   return (
     <nav className="app-navbar-top">
       <BootstrapContainer className="appbar-container">
@@ -119,15 +114,7 @@ function AppBar({ boards }) {
                       items={recentBoards.map((r, index) => {
                         return {
                           key: index,
-                          label: (
-                            <a
-                              href="#"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {r.title}
-                            </a>
-                          ),
+                          label: <Link to={`boards/${r._id}`}>{r.title}</Link>,
                         }
                       })}
                     />
@@ -154,7 +141,7 @@ function AppBar({ boards }) {
                     allowClear={{
                       clearIcon: <CloseOutlined style={{ color: '#e74c3c' }} />,
                     }}
-                    onSearch={onSearch}
+                    onchange={onSearch}
                     style={{
                       width: 200,
                     }}

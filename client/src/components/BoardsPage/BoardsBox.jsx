@@ -21,7 +21,6 @@ import {
   LoadingOutlined,
 } from '@ant-design/icons'
 import 'rc-color-picker/assets/index.css'
-import ColorPicker from 'rc-color-picker'
 import { getBase64, beforeUpload } from '../../util/upload'
 
 import { HexColorPicker } from 'react-colorful'
@@ -35,8 +34,9 @@ import 'swiper/css'
 import 'swiper/css/grid'
 import 'swiper/css/pagination'
 import { Grid, Pagination } from 'swiper'
+import useApp from '../../util/getContext'
 
-const CreateBoard = () => {
+const BoardsBox = () => {
   const navigate = useNavigate()
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmModal, setConfirmModal] = useState(false)
@@ -46,7 +46,7 @@ const CreateBoard = () => {
   const [loading, setLoading] = useState(false)
   const [spinLoading, setSpinLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
-  const [boards, setBoards] = useState([])
+  const { boards, setBoards } = useApp()
   const handleChangeColor = (color) => {
     setColor(color)
     form.setFieldsValue({ color })
@@ -87,6 +87,7 @@ const CreateBoard = () => {
   const validateMessage = {
     required: '${label} is required!',
   }
+
   const onFinishModal = async (values) => {
     try {
       const data = await createBoard(values)
@@ -98,6 +99,7 @@ const CreateBoard = () => {
       navigate(0)
     }
   }
+
   const handleChange = (info) => {
     const imgURL = URL.createObjectURL(info.file)
     console.log(info.file)
@@ -106,6 +108,7 @@ const CreateBoard = () => {
     })
     setImageUrl(imgURL)
   }
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -118,24 +121,27 @@ const CreateBoard = () => {
       </div>
     </div>
   )
-  console.log(modalVisible)
+
   useEffect(() => {
     const getBoardsApi = async () => {
       setSpinLoading(true)
+
       try {
         const data = await getBoards()
         setSpinLoading(false)
         setBoards(data)
       } catch (error) {
+        setSpinLoading(false)
         message.error(error)
       }
     }
     getBoardsApi()
   }, [modalVisible])
+
   return (
     <Spin spinning={spinLoading} size="large">
       <div className="create-board-navbar">
-        <AppBar boards={boards} />
+        <AppBar />
         <div className="create-container">
           <Button type="primary" onClick={showModal} className="add-board-icon">
             <PlusOutlined />
@@ -155,7 +161,7 @@ const CreateBoard = () => {
             {boards.map((board, index) => (
               <SwiperSlide
                 onClick={() => {
-                  navigate(`../board/${board._id}`, { replace: true })
+                  navigate(`/boards/${board._id}`)
                 }}
               >
                 <Card
@@ -265,4 +271,4 @@ const CreateBoard = () => {
   )
 }
 
-export default CreateBoard
+export default BoardsBox
