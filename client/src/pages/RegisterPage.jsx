@@ -69,9 +69,10 @@ const RegisterPage = () => {
   const submitRegister = async (form) => {
     try {
       const data = await registerApi(form)
-      localStorage.setItem('auth', JSON.stringify(data))
+      localStorage.setItem('token', JSON.stringify(data.token))
       message.success('Register Succesfully')
-      navigate('/board')
+      navigate(0)
+      navigate('/boards')
     } catch (error) {
       const data = getHttpResponse(error)
       console.log(data)

@@ -74,7 +74,9 @@ const LoginPage = () => {
   const onSubmit = async (formData) => {
     try {
       const data = await loginApi(formData)
-      localStorage.setItem('auth', JSON.stringify(data))
+      console.log(data)
+      localStorage.setItem('token', JSON.stringify(data.token))
+      localStorage.setItem('user', JSON.stringify(data.user))
       message.success('Login Successfully')
       navigate(0)
       navigate('/boards')

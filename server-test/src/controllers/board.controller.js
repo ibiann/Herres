@@ -17,7 +17,6 @@ const createNew = async (req, res) => {
         ...req.body,
         user_id: res.locals.user_id,
       })
-      console.log(result)
       res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
       console.log(error)
@@ -58,6 +57,29 @@ const getAll = async (req, res) => {
     })
   }
 }
+const getInvitedUsers = async (req, res) => {
+  const { id } = req.params
+  try {
+    let result = await BoardService.getInvitedUsers(id)
+    res.status(HttpStatusCode.OK).json(result)
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    })
+  }
+}
+const getCanInvitedUsers = async (req, res) => {
+  const { user_id } = res.locals
+  const { id } = req.params
+  try {
+    let result = await BoardService.getCanInvitedUsers(id, user_id)
+    res.status(HttpStatusCode.OK).json(result)
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    })
+  }
+}
 const update = async (req, res) => {
   try {
     const { id } = req.params //destructuring //return về một array hay object rest api
@@ -70,5 +92,25 @@ const update = async (req, res) => {
     })
   }
 }
-
-export const BoardController = { createNew, getFullBoard, update, getAll }
+const inviteUsers = async (req, res) => {
+  try {
+    const { id } = req.params //destructuring //return về một array hay object rest api
+    console.log(req.body.invitedUsers)
+    const result = await BoardService.invitedUsers(id, req.body.invitedUsers)
+    console.log(result)
+    res.status(HttpStatusCode.OK).json(result)
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    })
+  }
+}
+export const BoardController = {
+  createNew,
+  getFullBoard,
+  update,
+  getAll,
+  inviteUsers,
+  getInvitedUsers,
+  getCanInvitedUsers,
+}

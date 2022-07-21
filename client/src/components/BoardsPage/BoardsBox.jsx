@@ -11,6 +11,7 @@ import {
   Upload,
   message,
   Spin,
+  Empty,
 } from 'antd'
 import '../../assets/scss/createboard.scss'
 import {
@@ -44,9 +45,15 @@ const BoardsBox = () => {
   const defaultColor = '#aabbcc'
   const [color, setColor] = useState(defaultColor)
   const [loading, setLoading] = useState(false)
-  const [spinLoading, setSpinLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
-  const { boards, setBoards } = useApp()
+  const {
+    boards,
+    setBoards,
+    spinLoading,
+    setSpinLoading,
+    invitedUsers,
+    auth: user,
+  } = useApp()
   const handleChangeColor = (color) => {
     setColor(color)
     form.setFieldsValue({ color })
@@ -66,17 +73,13 @@ const BoardsBox = () => {
   }
 
   const handleConfirm = () => {
-    setConfirmModal(true)
     form
       .validateFields(['title', 'image'])
       .then(() => {
         form.submit()
-        setModalVisible(false)
-        setConfirmModal(false)
       })
       .catch((err) => {
         console.log(err)
-        setConfirmModal(false)
       })
   }
 
@@ -89,11 +92,15 @@ const BoardsBox = () => {
   }
 
   const onFinishModal = async (values) => {
+    setSpinLoading(true)
+    setModalVisible(false)
     try {
       const data = await createBoard(values)
       message.success('created successfully')
+      setSpinLoading(false)
       navigate(0)
     } catch (error) {
+      setModalVisible(false)
       const data = getHttpResponse(error)
       message.error(data)
       navigate(0)
@@ -135,6 +142,7 @@ const BoardsBox = () => {
         message.error(error)
       }
     }
+
     getBoardsApi()
   }, [modalVisible])
 
@@ -142,130 +150,142 @@ const BoardsBox = () => {
     <Spin spinning={spinLoading} size="large">
       <div className="create-board-navbar">
         <AppBar />
-        <div className="create-container">
-          <Button type="primary" onClick={showModal} className="add-board-icon">
-            <PlusOutlined />
-          </Button>
-          <Swiper
-            slidesPerView={4}
-            grid={{
-              rows: 1,
-            }}
-            spaceBetween={15}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[Grid, Pagination]}
-            className="list-board"
-          >
-            {boards.map((board, index) => (
-              <SwiperSlide
-                onClick={() => {
-                  navigate(`/boards/${board._id}`)
-                }}
-              >
-                <Card
-                  className="list-board__item"
-                  cover={
-                    <img
-                      alt="board"
-                      src={board.image}
-                      className="list-board__item-img"
-                    />
-                  }
-                  style={{ color: `${board.color}` }}
-                >
-                  <p>{board.title}</p>
-                  <SettingOutlined style={{ color: `${board.color}` }} />
-                </Card>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <Modal
-            title="Create Board"
-            visible={modalVisible}
-            maskClosable={false}
-            centered
-            confirmLoading={confirmModal}
-            onOk={handleConfirm}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="back" onClick={handleCancel}>
-                <CloseOutlined />
-              </Button>,
-              <Button
-                key="submit"
-                type="primary"
-                loading={confirmModal}
-                onClick={handleConfirm}
-                htmlType="submit"
-              >
-                <CheckOutlined />
-              </Button>,
-            ]}
-          >
-            <Form
-              {...layout}
-              form={form}
-              name="nest-message"
-              onFinish={onFinishModal}
-              validateMessage={validateMessage}
+        {boards.length < 0 ? (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        ) : (
+          <div className="create-container">
+            <Button
+              type="primary"
+              onClick={showModal}
+              className="add-board-icon"
             >
-              <Form.Item
-                name="title"
-                label="Title"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  onChange={(e) => {
-                    form.setFieldsValue('title', e.target.value)
+              <PlusOutlined />
+            </Button>
+            <Swiper
+              slidesPerView={4}
+              grid={{
+                rows: 1,
+              }}
+              spaceBetween={15}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Grid, Pagination]}
+              className="list-board"
+            >
+              {boards.map((board, index) => (
+                <SwiperSlide
+                  onClick={() => {
+                    navigate(`/boards/${board._id}`)
                   }}
-                />
-              </Form.Item>
-              <Form.Item
-                name="color"
-                label="Color"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-                // initialValue={color}
-              >
-                <div style={{ margin: '6px 0 0 0' }}>
-                  <HexColorPicker color={color} onChange={handleChangeColor} />
-                </div>
-              </Form.Item>
-              <Form.Item name="image" label="Image">
-                <Upload
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  showUploadList={false}
-                  beforeUpload={beforeUpload}
-                  onChange={handleChange}
-                  multiple={false}
                 >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="avatar"
-                      style={{
-                        width: '50px',
-                      }}
+                  <Card
+                    className="list-board__item"
+                    cover={
+                      <img
+                        alt="board"
+                        src={board.image}
+                        className="list-board__item-img"
+                      />
+                    }
+                    style={{ color: `${board.color}` }}
+                  >
+                    <p>{board.title}</p>
+                    <SettingOutlined style={{ color: `${board.color}` }} />
+                  </Card>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <Modal
+              title="Create Board"
+              visible={modalVisible}
+              maskClosable={false}
+              centered
+              confirmLoading={confirmModal}
+              onOk={handleConfirm}
+              onCancel={handleCancel}
+              footer={[
+                <Button key="back" onClick={handleCancel}>
+                  <CloseOutlined />
+                </Button>,
+                <Button
+                  key="submit"
+                  type="primary"
+                  loading={confirmModal}
+                  onClick={handleConfirm}
+                  htmlType="submit"
+                >
+                  <CheckOutlined />
+                </Button>,
+              ]}
+            >
+              <Form
+                {...layout}
+                form={form}
+                name="nest-message"
+                onFinish={onFinishModal}
+                validateMessage={validateMessage}
+              >
+                <Form.Item
+                  name="title"
+                  label="Title"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input
+                    onChange={(e) => {
+                      form.setFieldsValue('title', e.target.value)
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="color"
+                  label="Color"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                  initialValue={color}
+                >
+                  <div style={{ margin: '6px 0 0 0' }}>
+                    <HexColorPicker
+                      color={color}
+                      onChange={handleChangeColor}
                     />
-                  ) : (
-                    uploadButton
-                  )}
-                </Upload>
-              </Form.Item>
-            </Form>
-          </Modal>
-        </div>
+                  </div>
+                </Form.Item>
+                <Form.Item name="image" label="Image">
+                  <Upload
+                    listType="picture-card"
+                    className="avatar-uploader"
+                    showUploadList={false}
+                    beforeUpload={beforeUpload}
+                    onChange={handleChange}
+                    multiple={false}
+                    accept="image/*"
+                  >
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt="avatar"
+                        style={{
+                          width: '50px',
+                        }}
+                      />
+                    ) : (
+                      uploadButton
+                    )}
+                  </Upload>
+                </Form.Item>
+              </Form>
+            </Modal>
+          </div>
+        )}
       </div>
     </Spin>
   )

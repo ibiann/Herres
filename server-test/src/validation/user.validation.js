@@ -40,4 +40,20 @@ const getUser = async (req, res, next) => {
     })
   }
 }
-export const UserValidation = { createNew, getUser }
+const editUser = async (req, res, next) => {
+  const condition = Joi.object({
+    name: Joi.string().required().min(3).max(30).trim(),
+    username: Joi.string().required().min(3).max(30).trim(),
+    image: Joi.string().required(),
+  })
+  try {
+    await condition.validateAsync(req.body, { abortEarly: false })
+    next()
+  } catch (error) {
+    res.status(HttpStatusCode.BAD_REQUEST).json({
+      errors: new Error(error).message,
+    })
+  }
+}
+
+export const UserValidation = { createNew, getUser, editUser }

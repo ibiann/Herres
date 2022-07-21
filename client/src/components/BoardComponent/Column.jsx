@@ -20,9 +20,8 @@ import {
 } from '@ant-design/icons'
 
 function Column(props) {
-  const { column, onCardDrop, onUpdateListColumn } = props
-  const cards = mapOrder(column.cards, column.cardOrder, '_id')
-
+  const { column, onCardDrop, onUpdateListColumn, board } = props
+  const { cards } = column
   const [showConfirmRemove, setShowConfirmRemove] = useState(false)
   const toggleShowConfirmRemove = () => setShowConfirmRemove(!showConfirmRemove)
 
@@ -71,6 +70,7 @@ function Column(props) {
         title: listTitle,
       }
       // Call Api update column
+      console.log(newColumn)
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
         updatedColumn.cards = newColumn.cards
         onUpdateListColumn(updatedColumn)
@@ -78,7 +78,7 @@ function Column(props) {
     }
   }
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       newCardInputTextRef.current.focus()
       return
@@ -89,16 +89,12 @@ function Column(props) {
       boardId: column.boardId,
       title: newCardTitle.trim(),
     }
-    // Call Api cards
-    createCard(newCardToAdd).then((card) => {
-      let newColumn = cloneDeep(column)
-      newColumn.cards.push(card)
-      newColumn.cardOrder.push(card._id)
-
-      onUpdateListColumn(newColumn)
-      setNewCardTitle('')
-      toggleOpenNewCardForm()
-    })
+    const card = await createCard(newCardToAdd)
+    let newColumn = cloneDeep(column)
+    newColumn.cards.push(card)
+    onUpdateListColumn(newColumn)
+    setNewCardTitle('')
+    toggleOpenNewCardForm()
   }
 
   return (
@@ -116,6 +112,9 @@ function Column(props) {
             onKeyDown={useKeyBoardToSaveTitle}
             onMouseDown={(e) => e.preventDefault()}
             spellCheck="false"
+            style={{
+              color: board.color,
+            }}
           />
         </div>
         <div className="dropdown-actions-list">
@@ -156,7 +155,7 @@ function Column(props) {
         >
           {cards.map((card, index) => (
             <Draggable key={index}>
-              <Card card={card} />
+              <Card card={card} board={board} column={column} />
             </Draggable>
           ))}
         </Container>

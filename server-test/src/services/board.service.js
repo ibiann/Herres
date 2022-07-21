@@ -20,6 +20,22 @@ const getAll = async (user_id) => {
     throw new Error(error)
   }
 }
+const getInvitedUsers = async (boardId) => {
+  try {
+    const boards = await BoardModel.getInvitedUsers(boardId)
+    return boards
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+const getCanInvitedUsers = async (boardId, userId) => {
+  try {
+    const boards = await BoardModel.canUserInvite(boardId, userId)
+    return boards
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 const update = async (id, data) => {
   try {
     const updateData = {
@@ -39,12 +55,10 @@ const update = async (id, data) => {
 
 const getFullBoard = async (boardId) => {
   try {
-    const board = await BoardModel.getFullBoard(boardId)
-
+    const { board, originalData } = await BoardModel.getFullBoard(boardId)
     if (!board || !board.columns) {
       throw new Error('Board not found!!! SOS')
     }
-
     const transformBoard = cloneDeep(board)
     /* Filter deleted columns */
     transformBoard.columns = transformBoard.columns.filter(
@@ -52,12 +66,19 @@ const getFullBoard = async (boardId) => {
     )
 
     // Add cards to the columns
-    transformBoard.columns.forEach((column) => {
-      column.cards = transformBoard.cards.filter(
-        (c) => c.columnId.toString() === column._id.toString()
-      )
+    // console.log('Origin:', originalData.columns)
+    // console.log('Transform:', transformBoard)
+    originalData.columns.forEach((column, index) => {
+      const cards = []
+      column.cards.forEach((cardId) => {
+        transformBoard.cards.forEach((card) => {
+          // console.log(card._id, cardId)
+          if (card._id.toString() === cardId) cards.push(card)
+        })
+      })
+      column.cards = cards
     })
-
+    transformBoard.columns = originalData.columns
     // sort the column order, card order
     // Remove cards data from boards
     delete transformBoard.cards
@@ -67,5 +88,21 @@ const getFullBoard = async (boardId) => {
     throw new Error(error)
   }
 }
+const invitedUsers = async (boardId, data) => {
+  try {
+    const boards = await BoardModel.invitedUsers(boardId, data)
+    return boards
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
-export const BoardService = { createNew, update, getFullBoard, getAll }
+export const BoardService = {
+  createNew,
+  update,
+  getFullBoard,
+  getAll,
+  getInvitedUsers,
+  getCanInvitedUsers,
+  invitedUsers
+}

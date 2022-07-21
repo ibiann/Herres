@@ -7,10 +7,10 @@
 //   return sortedArray;
 // };
 
-export const mapOrder = (array, order, key) => {
-  if (!array || !order || !key) {
-    return [];
+export const mapOrder = (array, key) => {
+  if (!array || !key) {
+    return []
   }
-  array.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
-  return array;
-};
+  array.sort((a, b) => array.indexOf(a[key]) - array.indexOf(b[key]))
+  return array
+}

@@ -22,6 +22,7 @@ import { getBoardsRecent } from '../../api/board'
 
 function AppBar({ boards }) {
   // const { Search } = Input
+  const { auth: user, setAuth } = useApp()
   const [recentBoards, setRecentBoards] = useState([])
   const onSearch = (value) => {
     return value
@@ -79,9 +80,10 @@ function AppBar({ boards }) {
       <Menu.Item
         key="2"
         onClick={() => {
-          localStorage.removeItem('auth')
-          navigate(0)
-          navigate('/', { replace: true })
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          setAuth(null)
+          navigate('/login', { replace: true })
         }}
       >
         <LoginOutlined
@@ -103,7 +105,7 @@ function AppBar({ boards }) {
           <Col xs={6} md={4} className="col-no-padding">
             <div className="action-apps">
               <div className="items-left home">
-                <a href={'/create'} target="_self">
+                <a href={'/boards'} target="_self">
                   <HomeFilled />
                 </a>
               </div>
@@ -114,7 +116,16 @@ function AppBar({ boards }) {
                       items={recentBoards.map((r, index) => {
                         return {
                           key: index,
-                          label: <Link to={`boards/${r._id}`}>{r.title}</Link>,
+                          label: (
+                            <a
+                              onClick={() => {
+                                navigate(`../boards/${r._id}`)
+                                navigate(0)
+                              }}
+                            >
+                              {r.title}
+                            </a>
+                          ),
                         }
                       })}
                     />
@@ -164,7 +175,7 @@ function AppBar({ boards }) {
           </Col>
           <Col xs={6} md={4} className="col-no-padding">
             <div className="app-branding text">
-              <a href="/create" target="_self">
+              <a href="/boards" target="_self">
                 <img src={logo} className="logo-top" alt="merres-logo" />
                 <div className="logo-app-name-container">
                   <span className="logo-app-name">Merres</span>
@@ -179,17 +190,18 @@ function AppBar({ boards }) {
                   className="items-right user"
                   onClick={(e) => e.preventDefault()}
                 >
-                  <img
-                    src="https://picsum.photos/id/1/200/300"
-                    alt="avatar-user"
-                  />
+                  <img src={user.image} alt="avatar-user" />
                 </div>
               </Dropdown>
             </div>
           </Col>
         </Row>
       </BootstrapContainer>
-      <SettingBox show={showSettingBox} onAction={onSettingAction} />
+      <SettingBox
+        show={showSettingBox}
+        setShow={setShowSettingBox}
+        onAction={onSettingAction}
+      />
     </nav>
   )
 }

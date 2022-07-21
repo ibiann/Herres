@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
+import { getCurrentUser } from '../api/auth'
 import useApp from '../util/getContext'
 
 function PublicRouter({ children }) {

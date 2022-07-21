@@ -3,15 +3,18 @@ import { ObjectId } from 'mongodb'
 import { getDB } from '../config/mongodb'
 import { ColumnModel } from './column.model'
 import { CardModel } from './card.model'
+import { UserModel } from './user.model'
+import _, { unset } from 'lodash'
 const boardCollectionName = 'boards'
 const boardCollectionSchema = Joi.object({
   title: Joi.string().required().min(3).max(30).trim(),
-  columnOrder: Joi.array().items(Joi.string()).default([]),
+  columns: Joi.array().items(Joi.string()).default([]),
   image: Joi.string(),
   color: Joi.string(),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
   _destroy: Joi.boolean().default(false),
+  invitedUsers: Joi.array().items(Joi.string()).default([]).unique(),
   user_id: Joi.string(),
 })
 
@@ -55,12 +58,12 @@ const createNew = async (data) => {
 
 const update = async (id, data) => {
   try {
-    const updateDate = { ...data }
+    const updateData = { ...data }
     const result = await getDB()
       .collection(boardCollectionName)
       .findOneAndUpdate(
         { _id: ObjectId(id) },
-        { $set: updateDate },
+        { $set: updateData },
         { returnDocumnet: 'after' }
       )
     return result.value
@@ -73,13 +76,13 @@ const update = async (id, data) => {
  * @param {string} boardId
  * @param {string} columnId
  */
-const pushColumnOrder = async (boardId, columnId) => {
+const pushColumns = async (boardId, columnId) => {
   try {
     const result = await getDB()
       .collection(boardCollectionName)
       .findOneAndUpdate(
         { _id: ObjectId(boardId) },
-        { $push: { columnOrder: columnId } },
+        { $push: { columns: columnId } },
         { returnDocument: 'after' }
       )
     return result.value
@@ -117,20 +120,153 @@ const getFullBoard = async (boardId) => {
             as: 'cards',
           },
         },
+        // { $set: { cards: { $arrayElemAt: ['$cards', 0] } } },
+        // { $sort: { index: 1 } },
+        // {
+        //   $group: {
+        //     _id: '$_id',
+        //     cards: { $push: '$cards' },
+        //   },
+        // },
       ])
       .toArray() //tra ve gia tri la 1 array data
-
-    return result[0] || {}
+    const originalData = await getDB()
+      .collection(boardCollectionName)
+      .aggregate([
+        {
+          //dieu kien loc ( -> lookup)
+          $match: {
+            _id: ObjectId(boardId),
+            _destroy: false,
+          },
+        },
+        {
+          $lookup: {
+            from: ColumnModel.columnCollectionName, //collection name
+            localField: '_id',
+            foreignField: 'boardId',
+            as: 'columns',
+          },
+        },
+      ])
+      .toArray()
+    return { board: result[0], originalData: originalData[0] } || {}
   } catch (error) {
     throw new Error(error)
   }
 }
+const invitedUsers = async (boardId, data) => {
+  try {
+    const users = [...data]
+    const result = await getDB()
+      .collection(boardCollectionName)
+      .findOneAndUpdate(
+        { _id: ObjectId(boardId) },
+        { $push: { invitedUsers: { $each: users } } },
+        { returnDocumnet: 'after' }
+      )
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+const getInvitedUsers = async (boardId) => {
+  try {
+    let result = await getDB()
+      .collection(boardCollectionName)
+      .aggregate([
+        {
+          //dieu kien loc ( -> lookup)
+          $match: {
+            _id: ObjectId(boardId),
+            _destroy: false,
+          },
+        },
+        { $unwind: '$invitedUsers' },
+        { $addFields: { userObjectId: { $toObjectId: '$invitedUsers' } } },
+        {
+          $lookup: {
+            from: UserModel.UserName,
+            localField: 'userObjectId',
+            foreignField: '_id',
+            as: 'users',
+          },
+        },
+      ])
+      .toArray()
+    result = result.map((r, index) => {
+      _.unset(r.users[0], 'password')
+      return r.users[0]
+    })
+    return result || []
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+const canUserInvite = async (boardId, userId) => {
+  try {
+    let invitedUsers = await getDB()
+      .collection(boardCollectionName)
+      .aggregate([
+        {
+          //dieu kien loc ( -> lookup)
+          $match: {
+            _id: ObjectId(boardId),
+            _destroy: false,
+          },
+        },
+        { $unwind: '$invitedUsers' },
+        { $addFields: { userObjectId: { $toObjectId: '$invitedUsers' } } },
+        {
+          $lookup: {
+            from: UserModel.UserName,
+            localField: 'userObjectId',
+            foreignField: '_id',
+            as: 'users',
+          },
+        },
+      ])
+      .toArray()
+    invitedUsers = invitedUsers.map((r, index) => {
+      return r.users[0]
+    })
+    const allUsers = await getDB()
+      .collection(UserModel.UserName)
+      .find({ _id: { $ne: ObjectId(userId) } })
+      .toArray()
+    let result = []
+    if (invitedUsers.length === 0) {
+      result = allUsers
+    } else {
+      const invitedUserIds = whoAreInvited(allUsers, invitedUsers)
+      result = allUsers
+        .filter((u) => invitedUserIds.includes(u._id.toString()))
+        .map((r) => {
+          _.unset(r, 'password')
+          return r
+        })
+    }
+    return result || []
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
+}
+const whoAreInvited = (users, invitedUsers) => {
+  const userIds = users.map((u) => u._id.toString())
+  const invitedUserIds = invitedUsers.map((u) => u._id.toString())
 
+  return userIds.filter((u) => !invitedUserIds.includes(u))
+}
 export const BoardModel = {
+  boardCollectionName,
   createNew,
   update,
   findOneById,
-  pushColumnOrder,
+  pushColumns,
   getFullBoard,
   getAll,
+  invitedUsers,
+  getInvitedUsers,
+  canUserInvite,
 }

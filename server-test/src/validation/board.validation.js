@@ -25,7 +25,7 @@ const createNew = async (req, res, next) => {
 const update = async (req, res, next) => {
   const condition = Joi.object({
     title: Joi.string().min(3).max(20).trim(),
-    columnOrder: Joi.array().items(Joi.string()),
+    columns: Joi.array().items(Joi.string()),
   })
   try {
     await condition.validateAsync(req.body, {
@@ -39,5 +39,17 @@ const update = async (req, res, next) => {
     })
   }
 }
-
-export const BoardValidation = { createNew, update }
+const inviteUsers = async (req, res, next) => {
+  const condition = Joi.object({
+    invitedUsers: Joi.array().items(Joi.string()),
+  })
+  try {
+    await condition.validateAsync(req.body, { abortEarly: false })
+    next()
+  } catch (error) {
+    res.status(HttpStatusCode.BAD_REQUEST).json({
+      errors: new Error(error).message,
+    })
+  }
+}
+export const BoardValidation = { createNew, update, inviteUsers }
