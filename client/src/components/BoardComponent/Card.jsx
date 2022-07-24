@@ -310,13 +310,13 @@ function Card(props) {
     setContent(e)
   }
   const getUserCanTag = (invitedUsers) => {
-    console.log(board)
     if (invitedUsers.length > 0 && board.user[0]) {
       return [...invitedUsers, board.user[0]]
     }
     return []
   }
   const countProgress = (todoList) => {
+    console.log(todoList)
     if (!todoList) return 0
     const doneTotal = todoList.filter((r) => r.done).length
     if (doneTotal === 0) return 0
@@ -637,6 +637,7 @@ function Card(props) {
                                   card,
                                 })
                                 setNewCard(data)
+                                setProcess(countProgress(card.todos))
                               }}
                             />
                             <Typography.Text delete={todo.done}>
@@ -673,6 +674,8 @@ function Card(props) {
                                   card,
                                 })
                                 setNewCard(data)
+                                setProcess(countProgress(card.todos))
+
                                 setTodo('')
                                 setShowFormToDo(false)
                               }}
