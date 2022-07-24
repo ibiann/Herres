@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../assets/scss/appbar.scss'
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
 import { cloneDeep } from 'lodash'
 import SettingBox from '../Modal/SettingBox'
-import { MODAL_CONFIRM } from '../../util/const'
-import { Dropdown, Menu, Tooltip, Button, Input } from 'antd'
+import { BOARD_URL_PATTERN, MODAL_CONFIRM } from '../../util/const'
+import { Dropdown, Menu, Tooltip, Button, Input, message } from 'antd'
 import logo from '../../assets/img/logo.png'
+import { IconButton } from '@mui/material'
 
 import {
   HomeFilled,
@@ -17,20 +18,40 @@ import {
   SearchOutlined,
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
-
+import useApp from '../../util/getContext'
+import { getBoards, getBoardsRecent } from '../../api/board'
+import { useCurrentPath } from '../../util/getCurrentRoute'
+import { BOARDS_URL_PATTERN } from './../../util/const'
 function AppBar() {
   // const { Search } = Input
+  const {
+    auth: user,
+    setAuth,
+    boards,
+    setBoards,
+    spinLoading,
+    setSpinLoading,
+  } = useApp()
+  const [recentBoards, setRecentBoards] = useState([])
+  const navigate = useNavigate()
+  const currentPath = useCurrentPath()
   const onSearch = (value) => {
     return value
   }
-  const navigate = useNavigate()
-  // const handleBtnClick = (e) => {
-  //   message.info("Click to search.");
-  //   return "click", e;
-  // };
-  const [showSettingBox, setshowSettingBox] = useState(false)
+  const onSearchEnter = async (e) => {
+    setSpinLoading(true)
+    try {
+      const data = await getBoards(e.target.value)
+      setBoards(data)
+      setSpinLoading(false)
+    } catch (error) {
+      setSpinLoading(false)
+      message.error(error)
+    }
+  }
+  const [showSettingBox, setShowSettingBox] = useState(false)
   const toggleShowSettingBox = () => {
-    setshowSettingBox(!showSettingBox)
+    setShowSettingBox(!showSettingBox)
   }
 
   const onSettingAction = (type) => {
@@ -56,7 +77,13 @@ function AppBar() {
       })
     }, 5000)
   }
-
+  useEffect(() => {
+    const getBoardsRecentApi = async () => {
+      const data = await getBoardsRecent(3)
+      setRecentBoards(data)
+    }
+    getBoardsRecentApi()
+  }, [])
   const menuAva = (
     <Menu>
       <Menu.Item key="1" onClick={toggleShowSettingBox}>
@@ -73,9 +100,10 @@ function AppBar() {
       <Menu.Item
         key="2"
         onClick={() => {
-          localStorage.removeItem('auth')
-          navigate(0)
-          navigate('/', { replace: true })
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          setAuth(null)
+          navigate('/login', { replace: true })
         }}
       >
         <LoginOutlined
@@ -90,38 +118,6 @@ function AppBar() {
       </Menu.Item>
     </Menu>
   )
-
-  const recBoardMenu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <span className="">Recent Boards</span>,
-          icon: <RetweetOutlined />,
-        },
-        {
-          type: 'divider',
-        },
-        {
-          key: '2',
-          label: (
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              Custom Board 1
-            </a>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              Custom Board 2
-            </a>
-          ),
-        },
-      ]}
-    />
-  )
-
   return (
     <nav className="app-navbar-top">
       <BootstrapContainer className="appbar-container">
@@ -129,13 +125,31 @@ function AppBar() {
           <Col xs={6} md={4} className="col-no-padding">
             <div className="action-apps">
               <div className="items-left home">
-                <a href={'/create'} target="_self">
+                <a href={'/boards'} target="_self">
                   <HomeFilled />
                 </a>
               </div>
               <div className="items-left recent-boards">
                 <Dropdown
-                  overlay={recBoardMenu}
+                  overlay={
+                    <Menu
+                      items={recentBoards.map((r, index) => {
+                        return {
+                          key: index,
+                          label: (
+                            <a
+                              onClick={() => {
+                                navigate(`../boards/${r._id}`)
+                                navigate(0)
+                              }}
+                            >
+                              {r.title}
+                            </a>
+                          ),
+                        }
+                      })}
+                    />
+                  }
                   trigger={['click']}
                   className="rec-board-dropdown"
                 >
@@ -146,42 +160,49 @@ function AppBar() {
                   </a>
                 </Dropdown>
               </div>
-              <div className="items-left searching-bar">
-                <Tooltip
-                  title={<span>Type here</span>}
-                  placement="bottomLeft"
-                  trigger="focus"
-                  className="tooltip-searching-bar"
-                >
-                  <Input
-                    placeholder="Search here...."
-                    allowClear={{
-                      clearIcon: <CloseOutlined style={{ color: '#e74c3c' }} />,
-                    }}
-                    onSearch={onSearch}
-                    style={{
-                      width: 200,
-                    }}
-                  />
+              {currentPath === BOARDS_URL_PATTERN ? (
+                <div className="items-left searching-bar">
                   <Tooltip
-                    title={<span>Must type to search</span>}
+                    title={<span>Type here</span>}
                     placement="bottomLeft"
+                    trigger="focus"
+                    className="tooltip-searching-bar"
                   >
-                    <Button
-                      type="primary"
-                      icon={<SearchOutlined />}
-                      loading={handleLoading[2]}
-                      onClick={() => handleEnterLoading(2)}
-                      className="searching-btn-handle"
+                    <Input
+                      placeholder="Search here...."
+                      allowClear={{
+                        clearIcon: (
+                          <CloseOutlined style={{ color: '#e74c3c' }} />
+                        ),
+                      }}
+                      // onchange={onSearch}
+                      onPressEnter={onSearchEnter}
+                      style={{
+                        width: 200,
+                      }}
                     />
+                    <Tooltip
+                      title={<span>Must type to search</span>}
+                      placement="bottomLeft"
+                    >
+                      <Button
+                        type="primary"
+                        icon={<SearchOutlined />}
+                        loading={handleLoading[2]}
+                        onClick={() => handleEnterLoading(2)}
+                        className="searching-btn-handle"
+                      />
+                    </Tooltip>
                   </Tooltip>
-                </Tooltip>
-              </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </Col>
           <Col xs={6} md={4} className="col-no-padding">
             <div className="app-branding text">
-              <a href="/create" target="_self">
+              <a href="/boards" target="_self">
                 <img src={logo} className="logo-top" alt="merres-logo" />
                 <div className="logo-app-name-container">
                   <span className="logo-app-name">Merres</span>
@@ -196,17 +217,18 @@ function AppBar() {
                   className="items-right user"
                   onClick={(e) => e.preventDefault()}
                 >
-                  <img
-                    src="https://picsum.photos/id/1/200/300"
-                    alt="avatar-user"
-                  />
+                  <img src={user.image} alt="avatar-user" />
                 </div>
               </Dropdown>
             </div>
           </Col>
         </Row>
       </BootstrapContainer>
-      <SettingBox show={showSettingBox} onAction={onSettingAction} />
+      <SettingBox
+        show={showSettingBox}
+        setShow={setShowSettingBox}
+        onAction={onSettingAction}
+      />
     </nav>
   )
 }

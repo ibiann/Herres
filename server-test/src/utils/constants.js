@@ -11,3 +11,7 @@ export const whitelist = [
   'http://localhost:3001',
   'http://localhost:8080',
 ]
+export const DEFAULT_AVA =
+  'https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg'
+
+export const TYPES = { TITLE: 'title', COLOR: 'color' }

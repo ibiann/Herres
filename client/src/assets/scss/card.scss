@@ -1,10 +1,11 @@
-@import "../../settings";
+@import 'settings';
 
 .card-items {
   background-color: #ffffff;
   padding: $gap;
   border-radius: $card-border-radius;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  position: relative;
   cursor: pointer;
   margin-bottom: $gap;
   img.card-cover {
@@ -14,4 +15,29 @@
     border-bottom-left-radius: $card-border-radius;
     border-bottom-right-radius: $card-border-radius;
   }
+}
+.ant-comment-content-author-name > * {
+  color: initial;
+}
+.ant-comment-content-author-name > *:hover {
+  color: initial;
+}
+.ant-comment-content-author-name {
+  color: initial;
+}
+.ant-comment-content-inline {
+  display: flex;
+  align-items: center;
+}
+.modal-card-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.easy-edit-button-wrapper {
+  display: block !important;
+  padding: 0 !important;
+}
+.easy-edit-button {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }

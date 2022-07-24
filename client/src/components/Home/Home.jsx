@@ -1,6 +1,7 @@
 import React from "react";
 import logo from '../../assets/img/svg/logo.svg';
 import hero from '../../assets/img/svg/hero.svg'
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -19,20 +20,20 @@ const Home = () => {
           </div>
           <div className="header-top-right">
             <div className="">
-              <a href="login">Log in</a>
+              <Link to="/login">Log in</Link>
               <button
                 className="btn btn-primary"
                 type="submit"
                 style={{ marginLeft: "15px" }}
               >
-                <a
-                  href="/register"
+                <Link
+                  to="/register"
                   target="_self"
                   rel="noopener noreferrer"
                   style={{ color: "white" }}
                 >
                   Sign up
-                </a>
+                </Link>
               </button>
             </div>
           </div>
@@ -53,14 +54,14 @@ const Home = () => {
               className="btn btn-primary"
               style={{ float: "right", marginRight: "16%" }}
             >
-              <a
-                href="/register"
+              <Link
+                to="/register"
                 target="_self"
                 rel="noopener noreferrer"
                 style={{ color: "white" }}
               >
                 Sign up - it's free
-              </a>
+              </Link>
             </button>
           </div>
           <div className="col-6">

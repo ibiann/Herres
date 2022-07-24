@@ -33,7 +33,8 @@ const register = async (req, res, next) => {
   try {
     const user = await AuthServices.createNew(req.body)
     const token = jwt.sign({ user }, process.env.SECRET_KEY)
-    _.unset(user, 'user.password')
+    _.unset(user, 'password')
+    console.log(user)
     res.json({ success: true, user: user, token: token })
   } catch (error) {
     console.log(error)
@@ -47,4 +48,15 @@ async function checkEmailExisted(email, username) {
   return false
 }
 
-export const authController = { login, register }
+const getCurrentUser = async (req, res) => {
+  const { user_id } = res.locals
+
+  try {
+    const user = await AuthServices.getCurrentUser(user_id)
+    res.json({ user })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ success: false, message: error })
+  }
+}
+export const authController = { login, register, getCurrentUser }

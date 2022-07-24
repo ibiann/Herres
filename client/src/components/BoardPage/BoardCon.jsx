@@ -20,39 +20,76 @@ import {
   updateCard,
 } from '../../api/'
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { updateBoard } from '../../api/board'
-
+import { fetchBoard, invitedUsers, updateBoard } from '../../api/board'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Empty, Skeleton, Spin, Modal } from 'antd'
+import useApp from '../../util/getContext'
 function BoardCon() {
-  const [board, setBoard] = useState({})
+  const params = useParams()
   const [columns, setColumns] = useState([])
   const [openNewListForm, setOpenNewListForm] = useState(false)
   const toggleOpenNewListForm = () => setOpenNewListForm(!openNewListForm)
+  const navigate = useNavigate()
 
+  const {
+    spinLoading,
+    setSpinLoading,
+    board,
+    setBoard,
+    auth: user,
+    invitedUsers,
+    setLengthLimitText,
+  } = useApp()
   const newListInputRef = useRef(null)
 
   const [newListTitle, setNewListTitle] = useState('')
   const onNewListTitleChange = (e) => setNewListTitle(e.target.value)
 
   useEffect(() => {
-    const boardDB = initialData.boards.find((board) => board.id === 'board-1')
-    /* const boardId = "62a228910422ccc16a5579c9";
-    fetchBoard(boardId).then((board) => {
-      console.log(board);
-      setBoard(board);
-      setColumns(mapOrder(board.columns, board.columnOrder, "_id"));
-    });
-  }, []); */
+    let boardDB = []
+    setSpinLoading(true)
+    const fetchBoardApi = async () => {
+      const { id } = params
+      try {
+        boardDB = await fetchBoard(id)
+        setSpinLoading(false)
+        setBoard(boardDB)
+        setLengthLimitText(boardDB.title)
 
-    if (boardDB) {
-      setBoard(boardDB)
-      //sort columns
-      boardDB.columns.sort((a, b) => {
-        return (
-          boardDB.columnOrder.indexOf(a._id) - boardDB.columnOrder.indexOf(b)
-        )
-      })
-      setColumns(mapOrder(boardDB.columns, boardDB.columnOrder, '_id'))
+        if (boardDB) {
+          setBoard(boardDB)
+          //sort columns
+          boardDB.columns.sort((a, b) => {
+            return boardDB.columns.indexOf(a._id) - boardDB.columns.indexOf(b)
+          })
+          setColumns(mapOrder(boardDB.columns, '_id'))
+        }
+      } catch (error) {
+        const { response } = error
+        if (response.status === 500) {
+          Modal.warning({
+            title: 'Not Found',
+            content: 'This board have been deleted or never created',
+            // okButtonProps: { disabled },
+          })
+          return
+        }
+        if (response.status === 401) {
+          Modal.error({
+            title: 'Unauthorized',
+            content: "You haven't been invited to this board",
+            // okButtonProps: { disabled },
+          })
+        }
+      }
     }
+    // const checkeExistedInBoard = (invitedUsers, currentUser, board) => {
+    //   let accessRight =
+    //     invitedUsers.map((user) => user._id).includes(currentUser._id) ||
+    //     currentUser._id === board.user_id
+    //   return accessRight
+    // }
+    fetchBoardApi()
   }, [])
 
   useEffect(() => {
@@ -63,7 +100,7 @@ function BoardCon() {
   }, [openNewListForm])
 
   if (isEmpty(board)) {
-    return <div className="not-found">404</div>
+    return <Skeleton />
   }
 
   const onColumnDrop = (dropResult) => {
@@ -71,7 +108,7 @@ function BoardCon() {
     newColumns = applyDrag(newColumns, dropResult)
 
     let newBoard = cloneDeep(board)
-    newBoard.columnOrder = newColumns.map((c) => c._id)
+    newBoard.columns = newColumns.map((c) => c._id)
     newBoard.columns = newColumns
 
     setColumns(newColumns)
@@ -90,22 +127,29 @@ function BoardCon() {
 
       let currentColumn = newColumns.find((c) => c._id === columnId)
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
-      currentColumn.cardOrder = currentColumn.cards.map((i) => i._id)
+      // currentColumn.cards = currentColumn.cards.map((i) => i._id)
 
       setColumns(newColumns) //update column
       if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
         /**
          * Moving cards inside columns
-         * Calling api update the cardOrder in column
+         * Calling api update the cards in column
          */
-        updateColumn(currentColumn._id, currentColumn).catch(() => {
-          setColumns(columns)
+        updateColumn(currentColumn._id, {
+          ...currentColumn,
+          cards: currentColumn.cards.map((i) => i._id),
         })
+          .then(() => {
+            console.log(currentColumn)
+          })
+          .catch(() => {
+            setColumns(columns)
+          })
       } else {
         /**
          * Moving cards between columns
          */
-        // Calling api update the cardOrder in column
+        // Calling api update the cards in column
         updateColumn(currentColumn._id, currentColumn).catch(() => {
           setColumns(columns)
         })
@@ -120,7 +164,7 @@ function BoardCon() {
     }
   }
 
-  const addNewList = () => {
+  const addNewList = async () => {
     if (!newListTitle) {
       newListInputRef.current.focus()
       return
@@ -131,23 +175,24 @@ function BoardCon() {
       title: newListTitle.trim(),
     }
     // Call Api columns
-    createColumn(newColumnToAdd).then((column) => {
-      let newColumns = cloneDeep(columns)
-      newColumns.push(column)
 
-      let newBoard = { ...board }
-      newBoard.columnOrder = newColumns.map((c) => c._id)
-      newBoard.columns = newColumns
+    const column = await createColumn(newColumnToAdd)
+    let newColumns = cloneDeep(columns)
+    newColumns.push(column)
+    console.log(columns)
+    let newBoard = { ...board }
+    newBoard.columns = newColumns.map((c) => c._id)
+    newBoard.columns = newColumns
 
-      setColumns(newColumns)
-      setBoard(newBoard)
-      setNewListTitle('')
-      toggleOpenNewListForm('')
-    })
+    setColumns(newColumns)
+    setBoard(newBoard)
+    setNewListTitle('')
+    toggleOpenNewListForm('')
   }
 
   const onUpdateListColumn = (newUpdateColumn) => {
     const columnIdUpdater = newUpdateColumn._id
+    console.log(newUpdateColumn)
 
     let newColumns = cloneDeep(columns)
     const columnIndexUpdater = newColumns.findIndex(
@@ -161,7 +206,7 @@ function BoardCon() {
     }
 
     let newBoard = { ...board }
-    newBoard.columnOrder = newColumns.map((c) => c._id)
+    newBoard.columns = newColumns.map((c) => c._id)
     newBoard.columns = newColumns
 
     setColumns(newColumns)
@@ -169,7 +214,13 @@ function BoardCon() {
   }
 
   return (
-    <div className="app-column-board">
+    <div
+      className="app-column-board"
+      style={{
+        background: `url(${board.image}) no-repeat`,
+        backgroundSize: 'cover',
+      }}
+    >
       <Container
         orientation="horizontal"
         onDrop={onColumnDrop}
@@ -184,6 +235,7 @@ function BoardCon() {
         {columns.map((column, index) => (
           <Draggable key={index}>
             <Column
+              board={board}
               column={column}
               onCardDrop={onCardDrop}
               onUpdateListColumn={onUpdateListColumn}

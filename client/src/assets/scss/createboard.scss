@@ -1,73 +1,111 @@
-@import '../../settings';
+@import 'settings';
 
 .create-board-navbar {
   height: 100vh;
   background-color: $screen-color;
-  .list-board {
-    display: flex;
-    padding: 30px;
-    align-items: center;
-    justify-content: start;
-    overflow: hidden;
-    &__item {
-      width: 400px;
-      height: 400px;
-    }
-    .ant-card {
-      padding: 0;
-      line-height: 12px;
-      border-radius: 10px;
-      transition: box-shadow 0.3s;
-      .ant-card-body {
-        font-size: 16px;
-        font-weight: 600;
-      }
-      img {
-        border-radius: 10px 10px 0 0;
-        object-fit: cover;
-      }
-      &:hover {
-        filter: brightness(112%);
-        box-shadow: 0 0 11px rgba(33, 33, 33, 0.5);
-      }
-      a {
-        color: unset;
-        text-decoration: none;
-        text-transform: capitalize;
-
-        &:hover {
-          color: rgb(27, 20, 100);
-
-          &:active {
-            color: rgb(87, 88, 187);
-
-            &:visited {
-              color: rgb(234, 32, 39);
-            }
-          }
-        }
-      }
-    }
+  .create-container {
     .add-board-icon {
       color: rgb(245, 246, 250);
-      background-color: rgb(220, 221, 225);
+      background-color: rgb(44, 82, 236);
       border: none;
-
+      position: absolute;
+      left: 95%;
+      top: 10%;
       &:hover {
-        color: rgb(72, 126, 176);
+        opacity: 0.7;
         filter: brightness(108%);
         box-shadow: 0 0 11px rgba(33, 33, 33, 0.5);
       }
     }
-    .color-click {
-      border-radius: 1px;
-      display: inline-block;
-      padding: 2px;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      .color-click-show {
-        border-radius: 2px;
+    .list-board {
+      // display: flex;
+      // padding: 30px;
+      // align-items: center;
+      // justify-content: start;
+      // overflow: hidden;
+      margin-top: 100px;
+      &__item {
+        width: 400px;
+        height: 400px;
+        &-img {
+          max-height: 300px;
+        }
+      }
+      &__item:hover {
+        cursor: pointer;
+      }
+      .ant-card {
+        padding: 0;
+        line-height: 12px;
+        border-radius: 10px;
+        transition: box-shadow 0.3s;
+        .ant-card-body {
+          font-size: 16px;
+          font-weight: 600;
+        }
+        img {
+          border-radius: 10px 10px 0 0;
+          object-fit: cover;
+        }
+        &:hover {
+          filter: brightness(112%);
+          box-shadow: 0 0 11px rgba(33, 33, 33, 0.5);
+        }
+        a {
+          color: unset;
+          text-decoration: none;
+          text-transform: capitalize;
+
+          &:hover {
+            color: rgb(27, 20, 100);
+
+            &:active {
+              color: rgb(87, 88, 187);
+
+              &:visited {
+                color: rgb(234, 32, 39);
+              }
+            }
+          }
+        }
+      }
+
+      .color-click {
+        border-radius: 1px;
+        display: inline-block;
+        padding: 2px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        .color-click-show {
+          border-radius: 2px;
+        }
       }
     }
+  }
+  .swiper {
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    height: calc((100% - 30px) / 2) !important;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
   }
 }

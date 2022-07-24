@@ -15,17 +15,29 @@ import { createCard, updateColumn } from '../../api'
 
 import {
   CloseCircleOutlined,
+  ExclamationCircleOutlined,
   MenuOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons'
-
+import { deleteColumn } from '../../api/column'
+import useApp from '../../util/getContext'
+import { useNavigate } from 'react-router-dom'
+import { Modal, message } from 'antd'
+const { confirm } = Modal
 function Column(props) {
-  const { column, onCardDrop, onUpdateListColumn } = props
-  const cards = mapOrder(column.cards, column.cardOrder, '_id')
-
+  const { column, onCardDrop, onUpdateListColumn, board } = props
+  const { cards } = column
   const [showConfirmRemove, setShowConfirmRemove] = useState(false)
   const toggleShowConfirmRemove = () => setShowConfirmRemove(!showConfirmRemove)
-
+  const {
+    boards,
+    setBoards,
+    spinLoading,
+    setSpinLoading,
+    invitedUsers,
+    setInvitedUsers,
+  } = useApp()
+  const navigate = useNavigate()
   const [listTitle, setListTitle] = useState('')
   const handleListTitleChange = (e) => setListTitle(e.target.value)
 
@@ -71,6 +83,7 @@ function Column(props) {
         title: listTitle,
       }
       // Call Api update column
+      console.log(newColumn)
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
         updatedColumn.cards = newColumn.cards
         onUpdateListColumn(updatedColumn)
@@ -78,7 +91,7 @@ function Column(props) {
     }
   }
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       newCardInputTextRef.current.focus()
       return
@@ -89,18 +102,38 @@ function Column(props) {
       boardId: column.boardId,
       title: newCardTitle.trim(),
     }
-    // Call Api cards
-    createCard(newCardToAdd).then((card) => {
-      let newColumn = cloneDeep(column)
-      newColumn.cards.push(card)
-      newColumn.cardOrder.push(card._id)
-
-      onUpdateListColumn(newColumn)
-      setNewCardTitle('')
-      toggleOpenNewCardForm()
+    const card = await createCard(newCardToAdd)
+    let newColumn = cloneDeep(column)
+    newColumn.cards.push(card)
+    onUpdateListColumn(newColumn)
+    setNewCardTitle('')
+    toggleOpenNewCardForm()
+  }
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure delete this column?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Please sure you want to do that,this action cannot be redone',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      async onOk() {
+        setSpinLoading(true)
+        try {
+          const data = await deleteColumn(column._id)
+          setSpinLoading(false)
+          message.success('Deleted succesfully')
+          // setInvitedUsers(data.invitedUsers)
+          navigate(0)
+        } catch (error) {
+          console.log(error)
+          message.error('Deleted Error')
+          // navigate(0)
+        }
+      },
+      onCancel() {},
     })
   }
-
   return (
     <div className="columns">
       <header className="column-drag-handle">
@@ -116,6 +149,9 @@ function Column(props) {
             onKeyDown={useKeyBoardToSaveTitle}
             onMouseDown={(e) => e.preventDefault()}
             spellCheck="false"
+            style={{
+              color: board.color,
+            }}
           />
         </div>
         <div className="dropdown-actions-list">
@@ -131,7 +167,7 @@ function Column(props) {
               <Dropdown.Item onClick={toggleOpenNewCardForm}>
                 Add card
               </Dropdown.Item>
-              <Dropdown.Item onClick={toggleShowConfirmRemove}>
+              <Dropdown.Item onClick={showDeleteConfirm}>
                 Archive this list
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -156,7 +192,7 @@ function Column(props) {
         >
           {cards.map((card, index) => (
             <Draggable key={index}>
-              <Card card={card} />
+              <Card card={card} board={board} column={column} />
             </Draggable>
           ))}
         </Container>
