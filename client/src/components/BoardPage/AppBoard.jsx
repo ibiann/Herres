@@ -78,6 +78,7 @@ function AppBoard() {
     setLengthLimitText(valueEdit)
     try {
       const newBoard = { ...board, title: valueEdit }
+      newBoard.columns = newBoard.columns.map((column) => column._id)
       const data = await updateBoard(boardId, newBoard)
       setBoard(newBoard)
       message.success("Edited Board's Name")

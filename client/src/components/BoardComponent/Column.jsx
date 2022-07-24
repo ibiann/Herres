@@ -82,10 +82,9 @@ function Column(props) {
         ...column,
         title: listTitle,
       }
-      // Call Api update column
-      console.log(newColumn)
+      newColumn.cards = cards.map((card) => card._id) || []
       updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
-        updatedColumn.cards = newColumn.cards
+        updatedColumn.cards = cards
         onUpdateListColumn(updatedColumn)
       })
     }

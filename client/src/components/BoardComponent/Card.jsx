@@ -418,14 +418,14 @@ function Card(props) {
               ) : (
                 <></>
               )}
-              {card.comments.length > 0 ? (
+              {card.comments?.length > 0 ? (
                 <Space
                   align="center"
                   direction="horizontal"
                   style={{ marginTop: '3px' }}
                 >
                   <MessageTwoTone />
-                  <span>{card.comments.length}</span>
+                  <span>{card.comments?.length}</span>
                 </Space>
               ) : (
                 <></>
@@ -715,7 +715,9 @@ function Card(props) {
               avatar={<MenuUnfoldOutlined style={{ fontSize: '20px' }} />}
               content={
                 <>
-                  {card.comments.length > 0 && <CommentList comments={card.comments} />}
+                  {card.comments?.length > 0 && (
+                    <CommentList comments={card.comments} />
+                  )}
                   <Comment
                     avatar={<Avatar src={user.image} alt={user.username} />}
                     content={
