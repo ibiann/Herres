@@ -9,7 +9,7 @@ const UserSchema = Joi.object({
   name: Joi.string().required(),
   image: Joi.string().default(DEFAULT_AVA),
   email: Joi.string().required().min(3).max(30).trim(),
-  password: Joi.string().required().min(3).max(30).trim(),
+  password: Joi.string().required().min(3).trim(),
   createdAt: Joi.date().timestamp().default(Date.now()),
   updatedAt: Joi.date().timestamp().default(null),
   _destroy: Joi.boolean().default(false),

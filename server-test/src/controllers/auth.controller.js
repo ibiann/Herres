@@ -1,14 +1,18 @@
 const jwt = require('jsonwebtoken')
 import { AuthServices } from '../services/auth.service'
+import bcrypt from 'bcrypt'
 import _ from 'lodash'
-
+const checkPassword = async (user, password) => {
+  const result = await bcrypt.compare(password, user.password)
+  return result
+}
 const login = async (req, res, next) => {
   const { email, password } = req.body
   console.log(req.body)
   if (!email || !password) res.json({})
   try {
     let user = await AuthServices.findOneByEmail(email)
-    if (user && user.password === password) {
+    if (user && checkPassword(user, password)) {
       const token = jwt.sign({ user }, process.env.SECRET_KEY)
       _.unset(user, 'password')
       res.json({ token, user, success: true })
@@ -31,10 +35,14 @@ const register = async (req, res, next) => {
   if (isExisted)
     return res.json({ success: false, message: 'Email or username existed' })
   try {
-    const user = await AuthServices.createNew(req.body)
+    const hashPassword = await bcrypt.hash(req.body.password, 10)
+
+    const user = await AuthServices.createNew({
+      ...req.body,
+      password: hashPassword,
+    })
     const token = jwt.sign({ user }, process.env.SECRET_KEY)
     _.unset(user, 'password')
-    console.log(user)
     res.json({ success: true, user: user, token: token })
   } catch (error) {
     console.log(error)

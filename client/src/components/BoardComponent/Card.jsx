@@ -62,8 +62,16 @@ const CommentList = ({ comments }) => {
             {...props}
             content={<p dangerouslySetInnerHTML={{ __html: content }}></p>}
             datetime={
-              <Tooltip title={moment(datetime).format('LLLL')}>
-                <span>{moment(datetime).fromNow()}</span>
+              <Tooltip
+                title={
+                  datetime
+                    ? moment(datetime).format('LLLL')
+                    : moment().format('LLLL')
+                }
+              >
+                <span>
+                  {datetime ? moment(datetime).fromNow() : moment().fromNow()}
+                </span>
               </Tooltip>
             }
           />
@@ -157,6 +165,29 @@ function Card(props) {
     console.log('Selected Time: ', value)
     console.log('Formatted Selected Time: ', dateString)
   }
+  const addCommentToCard = (comment) => {
+    const newBoard = { ...board }
+    board.columns.forEach((column) => {
+      column.cards.forEach((c) => {
+        if (c._id === card._id) {
+          c.comments.push(comment)
+        }
+      })
+    })
+    return newBoard
+  }
+  const getAllCommentsToCard = (card) => {
+    const newBoard = { ...board }
+    newBoard.columns.forEach((column) => {
+      column.cards.forEach((c) => {
+        if (c._id === card._id) {
+          console.log(c.comments)
+          return c.comments
+        }
+      })
+    })
+    return []
+  }
   const onChangeDueDate = async (e) => {
     card.finish = e.target.checked
     const data = await updateCard(card._id, { card })
@@ -229,16 +260,25 @@ function Card(props) {
     setTimeout(async () => {
       setSubmitting(false)
       setContent('')
-      setComments([
+      const newComments = [
         ...comments,
         {
           author: user.username,
           avatar: user.image,
           content: convertComment(content),
-
-          datetime: moment().fromNow(),
+          datetime: null,
         },
-      ])
+      ]
+      setComments(newComments)
+      const newBoard = { ...board }
+      newBoard.columns.forEach((column) => {
+        column.cards.forEach((c) => {
+          if (c._id === card._id) {
+            c.comments = newComments
+          }
+        })
+      })
+      setBoard(newBoard)
       try {
         const commentData = {
           cardId: card._id,
@@ -253,7 +293,6 @@ function Card(props) {
   }
   const setNewCard = (card) => {
     const newBoard = { ...board }
-    console.log(newBoard)
     if (!newBoard.columns) return
     newBoard.columns?.forEach((col) => {
       if (col._id === column._id) {
@@ -303,10 +342,19 @@ function Card(props) {
         return d
       })
       setComments(data)
+      const newBoard = { ...board }
+      newBoard.columns.forEach((column) => {
+        column.cards.forEach((c) => {
+          if (c._id === card._id) {
+            c.comments = data
+          }
+        })
+      })
+      setBoard(newBoard)
     }
     setProcess(countProgress(card.todos))
     getAllCommentsApi()
-  }, [board])
+  }, [])
   return (
     <>
       <div className="card-items" onClick={showModal}>
@@ -370,14 +418,14 @@ function Card(props) {
               ) : (
                 <></>
               )}
-              {comments.length > 0 ? (
+              {card.comments.length > 0 ? (
                 <Space
                   align="center"
                   direction="horizontal"
                   style={{ marginTop: '3px' }}
                 >
                   <MessageTwoTone />
-                  <span>{comments.length}</span>
+                  <span>{card.comments.length}</span>
                 </Space>
               ) : (
                 <></>
@@ -620,7 +668,6 @@ function Card(props) {
                                   name: todo,
                                   done: false,
                                 })
-                                console.log(newTodoList)
                                 card.todos = newTodoList
                                 const data = await updateCard(card._id, {
                                   card,
@@ -668,7 +715,7 @@ function Card(props) {
               avatar={<MenuUnfoldOutlined style={{ fontSize: '20px' }} />}
               content={
                 <>
-                  {comments.length > 0 && <CommentList comments={comments} />}
+                  {card.comments.length > 0 && <CommentList comments={card.comments} />}
                   <Comment
                     avatar={<Avatar src={user.image} alt={user.username} />}
                     content={
