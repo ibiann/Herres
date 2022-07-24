@@ -3,9 +3,10 @@ import '../../assets/scss/appbar.scss'
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
 import { cloneDeep } from 'lodash'
 import SettingBox from '../Modal/SettingBox'
-import { MODAL_CONFIRM } from '../../util/const'
-import { Dropdown, Menu, Tooltip, Button, Input } from 'antd'
+import { BOARD_URL_PATTERN, MODAL_CONFIRM } from '../../util/const'
+import { Dropdown, Menu, Tooltip, Button, Input, message } from 'antd'
 import logo from '../../assets/img/logo.png'
+import { IconButton } from '@mui/material'
 
 import {
   HomeFilled,
@@ -18,17 +19,36 @@ import {
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import useApp from '../../util/getContext'
-import { getBoardsRecent } from '../../api/board'
-
-function AppBar({ boards }) {
+import { getBoards, getBoardsRecent } from '../../api/board'
+import { useCurrentPath } from '../../util/getCurrentRoute'
+import { BOARDS_URL_PATTERN } from './../../util/const'
+function AppBar() {
   // const { Search } = Input
-  const { auth: user, setAuth } = useApp()
+  const {
+    auth: user,
+    setAuth,
+    boards,
+    setBoards,
+    spinLoading,
+    setSpinLoading,
+  } = useApp()
   const [recentBoards, setRecentBoards] = useState([])
+  const navigate = useNavigate()
+  const currentPath = useCurrentPath()
   const onSearch = (value) => {
     return value
   }
-
-  const navigate = useNavigate()
+  const onSearchEnter = async (e) => {
+    setSpinLoading(true)
+    try {
+      const data = await getBoards(e.target.value)
+      setBoards(data)
+      setSpinLoading(false)
+    } catch (error) {
+      setSpinLoading(false)
+      message.error(error)
+    }
+  }
   const [showSettingBox, setShowSettingBox] = useState(false)
   const toggleShowSettingBox = () => {
     setShowSettingBox(!showSettingBox)
@@ -140,37 +160,44 @@ function AppBar({ boards }) {
                   </a>
                 </Dropdown>
               </div>
-              <div className="items-left searching-bar">
-                <Tooltip
-                  title={<span>Type here</span>}
-                  placement="bottomLeft"
-                  trigger="focus"
-                  className="tooltip-searching-bar"
-                >
-                  <Input
-                    placeholder="Search here...."
-                    allowClear={{
-                      clearIcon: <CloseOutlined style={{ color: '#e74c3c' }} />,
-                    }}
-                    onchange={onSearch}
-                    style={{
-                      width: 200,
-                    }}
-                  />
+              {currentPath === BOARDS_URL_PATTERN ? (
+                <div className="items-left searching-bar">
                   <Tooltip
-                    title={<span>Must type to search</span>}
+                    title={<span>Type here</span>}
                     placement="bottomLeft"
+                    trigger="focus"
+                    className="tooltip-searching-bar"
                   >
-                    <Button
-                      type="primary"
-                      icon={<SearchOutlined />}
-                      loading={handleLoading[2]}
-                      onClick={() => handleEnterLoading(2)}
-                      className="searching-btn-handle"
+                    <Input
+                      placeholder="Search here...."
+                      allowClear={{
+                        clearIcon: (
+                          <CloseOutlined style={{ color: '#e74c3c' }} />
+                        ),
+                      }}
+                      // onchange={onSearch}
+                      onPressEnter={onSearchEnter}
+                      style={{
+                        width: 200,
+                      }}
                     />
+                    <Tooltip
+                      title={<span>Must type to search</span>}
+                      placement="bottomLeft"
+                    >
+                      <Button
+                        type="primary"
+                        icon={<SearchOutlined />}
+                        loading={handleLoading[2]}
+                        onClick={() => handleEnterLoading(2)}
+                        className="searching-btn-handle"
+                      />
+                    </Tooltip>
                   </Tooltip>
-                </Tooltip>
-              </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </Col>
           <Col xs={6} md={4} className="col-no-padding">

@@ -25,14 +25,18 @@ export const updateBoard = async (id, data) => {
   const response = await axios.put(`${API_ROOT}/v1/boards/${id}`, data)
   return response.data
 }
+export const deleteBoard = async (id) => {
+  const response = await axios.delete(`${API_ROOT}/v1/boards/${id}`)
+  return response.data
+}
 // tra ve update board neu co
-export const getBoards = async () => {
-  console.log(axios.defaults.headers.common)
-  const response = await axios.get(`${API_ROOT}/v1/boards`)
+export const getBoards = async (search) => {
+  const response = await axios.get(`${API_ROOT}/v1/boards`, {
+    params: { search },
+  })
   return response.data
 }
 export const getBoardsRecent = async (num) => {
-  console.log(axios.defaults.headers.common)
   const response = await axios.get(`${API_ROOT}/v1/boards`, {
     params: { recent: num },
   })

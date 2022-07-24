@@ -87,11 +87,25 @@ const update = async (id, data) => {
     throw new Error(error)
   }
 }
-
+const deleted = async (id) => {
+  try {
+    const result = await getDB()
+      .collection(columnCollectionName)
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { _destroy: true } },
+        { returnDocumnet: 'after' }
+      )
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 export const ColumnModel = {
   columnCollectionName,
   createNew,
   findOneById,
   pushCards,
   update,
+  deleted,
 }

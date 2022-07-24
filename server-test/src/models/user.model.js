@@ -77,7 +77,6 @@ const getAll = async (id) => {
   }
 }
 const getCurrentUser = async (user_id) => {
-  console.log(user_id)
   try {
     const result = await getDB()
       .collection(UserName)

@@ -14,6 +14,7 @@ import {
   Spin,
 } from 'antd'
 import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
+import { debounce } from 'debounce'
 import {
   CloseOutlined,
   CoffeeOutlined,
@@ -25,11 +26,14 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { IconButton } from '@mui/material'
 import { getUsers } from '../../api/user'
 import { MentionsInput, Mention } from 'react-mentions'
-
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+const { confirm } = Modal
 import {
+  deleteBoard,
   getCanUsersInvited,
   getUsersInvited,
   invitedUsers as invitedUsersApi,
+  updateBoard,
 } from '../../api/board'
 import { useNavigate, useParams } from 'react-router-dom'
 import useApp from '../../util/getContext'
@@ -42,7 +46,6 @@ function AppBoard() {
   const { id: boardId } = useParams()
   const { Paragraph } = Typography
   const [canInvitedUser, setcanInvitedUser] = useState([])
-  const [lengthLimitText, setLengthLimitText] = useState('Custom Board')
   const [itemDropDownList, SetItemDropDownList] = useState([])
   const [nameItemList, setNameItemList] = useState('')
   const {
@@ -52,6 +55,10 @@ function AppBoard() {
     setSpinLoading,
     invitedUsers,
     setInvitedUsers,
+    board,
+    setBoard,
+    lengthLimitText,
+    setLengthLimitText,
   } = useApp()
   const navigate = useNavigate()
   const [uploadingFile, setUploadingFile] = useState(null)
@@ -66,7 +73,29 @@ function AppBoard() {
   const onNameItemListChange = (e) => {
     setNameItemList(e.target.value)
   }
-
+  const debounceEdit = async (valueEdit) => {
+    if (!valueEdit) return
+    setLengthLimitText(valueEdit)
+    try {
+      const newBoard = { ...board, title: valueEdit }
+      const data = await updateBoard(boardId, newBoard)
+      setBoard(newBoard)
+      message.success("Edited Board's Name")
+    } catch (error) {
+      message.error(error)
+    }
+  }
+  // const onEditName = async (e) => {
+  //   try {
+  //     const newBoard = { ...board, title: lengthLimitText }
+  //     console.log(lengthLimitText)
+  //     const data = await updateBoard(boardId, newBoard)
+  //     setBoard(newBoard)
+  //     // setLengthLimitText(lengthLimitText)
+  //   } catch (error) {
+  //     message.error(error)
+  //   }
+  // }
   const addItem = (e) => {
     e.preventDefault()
     SetItemDropDownList([
@@ -89,6 +118,7 @@ function AppBoard() {
       message.error(error)
     }
   }
+
   const handleConfirm = async () => {
     setModalVisible(false)
     form
@@ -103,6 +133,34 @@ function AppBoard() {
   const handleChange = (value) => {
     console.log(`selected ${value}`)
   }
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure delete this board?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Please sure you want to do that,this action cannot be redone',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      async onOk() {
+        setSpinLoading(true)
+        try {
+          const data = await deleteBoard(boardId)
+          setSpinLoading(false)
+          message.success('Deleted succesfully')
+          // setInvitedUsers(data.invitedUsers)
+          navigate(-1)
+        } catch (error) {
+          console.log(error)
+          message.error('Deleted Error')
+          navigate(-1)
+        }
+      },
+      onCancel() {},
+    })
+  }
+  useEffect(() => {
+    setLengthLimitText(lengthLimitText)
+  }, [lengthLimitText])
   useEffect(() => {
     const getUsersApi = async () => {
       const invitedUsers = await getUsersInvited(boardId)
@@ -133,11 +191,12 @@ function AppBoard() {
                     fontWeight: 'bold',
                   }}
                   editable={{
-                    onChange: setLengthLimitText,
+                    onChange: debounceEdit,
                     maxlength: 6,
                     tooltip: false,
                     enterIcon: null,
                     autoSize: { maxRows: 1, minRows: 1 },
+                    // onEnd: onEditName,
                   }}
                   className="items board-type"
                 >
@@ -223,10 +282,8 @@ function AppBoard() {
             <Col sm={2} xs={12} className="col-no-padding">
               <div className="board-actions">
                 <div className="items menu">
-                  <IconButton aria-label="delete">
-                    <a href="/create" target="_self">
-                      <DeleteIcon />
-                    </a>
+                  <IconButton aria-label="delete" onClick={showDeleteConfirm}>
+                    <DeleteIcon />
                   </IconButton>
                 </div>
               </div>

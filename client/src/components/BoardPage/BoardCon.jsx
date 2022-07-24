@@ -38,6 +38,7 @@ function BoardCon() {
     setBoard,
     auth: user,
     invitedUsers,
+    setLengthLimitText,
   } = useApp()
   const newListInputRef = useRef(null)
 
@@ -49,16 +50,37 @@ function BoardCon() {
     setSpinLoading(true)
     const fetchBoardApi = async () => {
       const { id } = params
-      boardDB = await fetchBoard(id)
-      setSpinLoading(false)
-      setBoard(boardDB)
-      if (boardDB) {
+      try {
+        boardDB = await fetchBoard(id)
+        setSpinLoading(false)
         setBoard(boardDB)
-        //sort columns
-        boardDB.columns.sort((a, b) => {
-          return boardDB.columns.indexOf(a._id) - boardDB.columns.indexOf(b)
-        })
-        setColumns(mapOrder(boardDB.columns, '_id'))
+        setLengthLimitText(boardDB.title)
+
+        if (boardDB) {
+          setBoard(boardDB)
+          //sort columns
+          boardDB.columns.sort((a, b) => {
+            return boardDB.columns.indexOf(a._id) - boardDB.columns.indexOf(b)
+          })
+          setColumns(mapOrder(boardDB.columns, '_id'))
+        }
+      } catch (error) {
+        const { response } = error
+        if (response.status === 500) {
+          Modal.warning({
+            title: 'Not Found',
+            content: 'This board have been deleted or never created',
+            // okButtonProps: { disabled },
+          })
+          return
+        }
+        if (response.status === 401) {
+          Modal.error({
+            title: 'Unauthorized',
+            content: "You haven't been invited to this board",
+            // okButtonProps: { disabled },
+          })
+        }
       }
     }
     // const checkeExistedInBoard = (invitedUsers, currentUser, board) => {

@@ -43,5 +43,12 @@ const getAllComments = async (id) => {
     throw new Error(error)
   }
 }
-
-export const CardService = { createNew, update ,getAllComments}
+const deleted = async (id) => {
+  try {
+    const deletedColumn = await CardModel.deleted(id)
+    return deletedColumn
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+export const CardService = { createNew, update, getAllComments, deleted }

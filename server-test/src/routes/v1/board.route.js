@@ -1,5 +1,6 @@
 import express from 'express'
 import { BoardController } from '../../controllers/board.controller'
+import verifyInvitedMiddleware from '../../middlewares/checkInvited'
 import { BoardValidation } from '../../validation/board.validation'
 
 const router = express.Router()
@@ -10,9 +11,11 @@ router
   .post(BoardValidation.createNew, BoardController.createNew)
 
 router
+  // .use()
   .route('/:id')
   .get(BoardController.getFullBoard)
   .put(BoardValidation.update, BoardController.update)
+  .delete(BoardController.deleted)
 
 router
   .route('/invited_users/:id')

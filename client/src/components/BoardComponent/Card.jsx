@@ -17,6 +17,7 @@ import {
   Tag,
   Progress,
   Tooltip,
+  message,
 } from 'antd'
 import { InlineInputEdit } from 'react-inline-input-edit'
 import {
@@ -25,6 +26,7 @@ import {
   CloseCircleFilled,
   CloseCircleOutlined,
   CommentOutlined,
+  ExclamationCircleOutlined,
   MenuUnfoldOutlined,
   MessageTwoTone,
   ScheduleTwoTone,
@@ -41,10 +43,13 @@ import uuid from 'react-uuid'
 import useApp from '../../util/getContext'
 import { convertComment } from '../../util/comment'
 import { HexColorPicker } from 'react-colorful'
-import { getComments, updateCard } from '../../api/card'
+import { deleteCard, getComments, updateCard } from '../../api/card'
 import { createComment } from '../../api/comment'
-
+import DeleteIcon from '@mui/icons-material/Delete'
+import { IconButton } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 const { TextArea } = Input
+const { confirm } = Modal
 const CommentList = ({ comments }) => {
   return (
     <List
@@ -139,6 +144,7 @@ function Card(props) {
   const [todo, setTodo] = useState('')
   const [content, setContent] = useState('')
   const [process, setProcess] = useState(0)
+  const navigate = useNavigate()
   const {
     auth: user,
     spinLoading,
@@ -192,6 +198,31 @@ function Card(props) {
   const cancel = () => {
     console.log('Cancelled')
   }
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure delete this card?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Please sure you want to do that,this action cannot be redone',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      async onOk() {
+        setSpinLoading(true)
+        try {
+          setSpinLoading(false)
+          const data = await deleteCard(card._id)
+
+          message.success('Deleted succesfully')
+          navigate(0)
+        } catch (error) {
+          console.log(error)
+          message.error('Deleted Error')
+          // navigate(0)
+        }
+      },
+      onCancel() {},
+    })
+  }
   const handleSubmit = async () => {
     if (!content) return
     setSubmitting(true)
@@ -238,6 +269,13 @@ function Card(props) {
   const handleChange = (e) => {
     console.log(e)
     setContent(e)
+  }
+  const getUserCanTag = (invitedUsers) => {
+    console.log(board)
+    if (invitedUsers.length > 0 && board.user[0]) {
+      return [...invitedUsers, board.user[0]]
+    }
+    return []
   }
   const countProgress = (todoList) => {
     if (!todoList) return 0
@@ -288,71 +326,91 @@ function Card(props) {
         ) : (
           <></>
         )}
-        <Typography style={{ color: board.color }}>{card.title}</Typography>
 
-        <Space
-          direction="horizontal"
-          align="center"
-          style={{ marginTop: '5px' }}
-        >
-          {card.dueDate ? (
-            card.finish ? (
-              <Tag
-                icon={<CheckCircleOutlined style={{ marginRight: '5px' }} />}
-                color="success"
-              >
-                {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
-              </Tag>
-            ) : moment(card.dueDate, 'DD MM YYYY hh:mm:ss') < moment() ? (
-              <Tag
-                icon={
-                  <ClockCircleOutlined
-                    style={{ fontSize: '8px', marginRight: '5px' }}
-                  />
-                }
-                color="error"
-              >
-                {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
-              </Tag>
-            ) : (
-              <Tag
-                icon={<SyncOutlined spin style={{ marginRight: '5px' }} />}
-                color="processing"
-              >
-                {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
-              </Tag>
-            )
-          ) : (
-            <></>
-          )}
-          {comments.length > 0 ? (
+        <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Col>
+            <Typography style={{ color: board.color, marginLeft: '8px' }}>
+              {card.title}
+            </Typography>
             <Space
-              align="center"
               direction="horizontal"
-              style={{ marginTop: '3px' }}
-            >
-              <MessageTwoTone />
-              <span>{comments.length}</span>
-            </Space>
-          ) : (
-            <></>
-          )}
-          {card.todos?.length > 0 ? (
-            <Space
               align="center"
-              direction="horizontal"
-              style={{ marginTop: '3px' }}
+              style={{ marginTop: '5px', gap: '0' }}
             >
-              <ScheduleTwoTone />
-              <span>
-                {card.todos.filter((todo) => todo.done).length}/
-                {card.todos.length}
-              </span>
+              {' '}
+              {card.dueDate ? (
+                card.finish ? (
+                  <Tag
+                    icon={
+                      <CheckCircleOutlined style={{ marginRight: '5px' }} />
+                    }
+                    color="success"
+                  >
+                    {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
+                  </Tag>
+                ) : moment(card.dueDate, 'DD MM YYYY hh:mm:ss') < moment() ? (
+                  <Tag
+                    icon={
+                      <ClockCircleOutlined
+                        style={{ fontSize: '8px', marginRight: '5px' }}
+                      />
+                    }
+                    color="error"
+                  >
+                    {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
+                  </Tag>
+                ) : (
+                  <Tag
+                    icon={<SyncOutlined spin style={{ marginRight: '5px' }} />}
+                    color="processing"
+                  >
+                    {moment(card.dueDate, 'DD MM YYYY hh:mm:ss').format('LL')}
+                  </Tag>
+                )
+              ) : (
+                <></>
+              )}
+              {comments.length > 0 ? (
+                <Space
+                  align="center"
+                  direction="horizontal"
+                  style={{ marginTop: '3px' }}
+                >
+                  <MessageTwoTone />
+                  <span>{comments.length}</span>
+                </Space>
+              ) : (
+                <></>
+              )}
+              {card.todos?.length > 0 ? (
+                <Space
+                  align="center"
+                  direction="horizontal"
+                  style={{ marginTop: '3px' }}
+                >
+                  <ScheduleTwoTone />
+                  <span>
+                    {card.todos.filter((todo) => todo.done).length}/
+                    {card.todos.length}
+                  </span>
+                </Space>
+              ) : (
+                <></>
+              )}
             </Space>
-          ) : (
-            <></>
-          )}
-        </Space>
+          </Col>
+          <Col>
+            <IconButton
+              aria-label="delete"
+              onClick={(e) => {
+                e.stopPropagation()
+                showDeleteConfirm()
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Col>
+        </Row>
       </div>
       <Modal
         style={{ top: 100 }}
@@ -620,7 +678,7 @@ function Card(props) {
                         submitting={submitting}
                         content={content}
                         setContent={setContent}
-                        users={invitedUsers}
+                        users={getUserCanTag(invitedUsers)}
                       />
                     }
                   />

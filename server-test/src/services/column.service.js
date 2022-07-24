@@ -20,7 +20,14 @@ const createNew = async (data) => {
     throw new Error(error)
   }
 }
-
+const deleted = async (id) => {
+  try {
+    const deletedColumn = await ColumnModel.deleted(id)
+    return deletedColumn
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 const update = async (id, data) => {
   try {
     const updateData = {
@@ -43,4 +50,4 @@ const update = async (id, data) => {
   }
 }
 
-export const ColumnService = { createNew, update }
+export const ColumnService = { createNew, update, deleted }

@@ -33,12 +33,75 @@ const findOneById = async (id) => {
   }
 }
 
-const getAll = async (user_id) => {
+const getAll = async (user_id, search) => {
   try {
-    const result = await getDB()
-      .collection(boardCollectionName)
-      .find({ user_id: user_id })
-      .toArray()
+    // const result = await getDB()
+    //   .collection(boardCollectionName)
+    //   .find({
+    //     $or: [{ user_id: user_id }, { invitedUsers: { $in: [user_id] } }],
+    //   })
+    //   .toArray()
+    console.log(search)
+
+    let result = []
+    if (search) {
+      result = await getDB()
+        .collection(boardCollectionName)
+        .aggregate([
+          {
+            $match: {
+              $or: [{ user_id: user_id }, { invitedUsers: { $in: [user_id] } }],
+              title: { $regex: search, $options: 'i' },
+              _destroy: false,
+            },
+          },
+          {
+            $addFields: {
+              user_id: { $toObjectId: '$user_id' },
+            },
+          },
+          {
+            $lookup: {
+              from: UserModel.UserName,
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+        ])
+        .toArray()
+    } else {
+      result = await getDB()
+        .collection(boardCollectionName)
+        .aggregate([
+          {
+            $match: {
+              $or: [{ user_id: user_id }, { invitedUsers: { $in: [user_id] } }],
+              _destroy: false,
+            },
+          },
+          {
+            $addFields: {
+              user_id: { $toObjectId: '$user_id' },
+            },
+          },
+          {
+            $lookup: {
+              from: UserModel.UserName,
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+        ])
+        .toArray()
+    }
+
+    // const allBoards = await getDB()
+    //   .collection(boardCollectionName)
+    //   .find({})
+    //   .toArray()
+    // console.log(allBoards)
     return result
   } catch (error) {
     throw new Error(error)
@@ -64,6 +127,20 @@ const update = async (id, data) => {
       .findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: updateData },
+        { returnDocumnet: 'after' }
+      )
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+const deleted = async (id) => {
+  try {
+    const result = await getDB()
+      .collection(boardCollectionName)
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { _destroy: true } },
         { returnDocumnet: 'after' }
       )
     return result.value
@@ -105,6 +182,19 @@ const getFullBoard = async (boardId) => {
           },
         },
         {
+          $addFields: {
+            user_id: { $toObjectId: '$user_id' },
+          },
+        },
+        {
+          $lookup: {
+            from: UserModel.UserName,
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        {
           $lookup: {
             from: ColumnModel.columnCollectionName, //collection name
             localField: '_id',
@@ -112,6 +202,7 @@ const getFullBoard = async (boardId) => {
             as: 'columns',
           },
         },
+
         {
           $lookup: {
             from: CardModel.cardCollectionName, //collection name
@@ -138,6 +229,19 @@ const getFullBoard = async (boardId) => {
           $match: {
             _id: ObjectId(boardId),
             _destroy: false,
+          },
+        },
+        {
+          $addFields: {
+            user_id: { $toObjectId: '$user_id' },
+          },
+        },
+        {
+          $lookup: {
+            from: UserModel.UserName,
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user',
           },
         },
         {
@@ -269,4 +373,5 @@ export const BoardModel = {
   invitedUsers,
   getInvitedUsers,
   canUserInvite,
+  deleted,
 }

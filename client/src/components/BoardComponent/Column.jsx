@@ -15,16 +15,29 @@ import { createCard, updateColumn } from '../../api'
 
 import {
   CloseCircleOutlined,
+  ExclamationCircleOutlined,
   MenuOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons'
-
+import { deleteColumn } from '../../api/column'
+import useApp from '../../util/getContext'
+import { useNavigate } from 'react-router-dom'
+import { Modal, message } from 'antd'
+const { confirm } = Modal
 function Column(props) {
   const { column, onCardDrop, onUpdateListColumn, board } = props
   const { cards } = column
   const [showConfirmRemove, setShowConfirmRemove] = useState(false)
   const toggleShowConfirmRemove = () => setShowConfirmRemove(!showConfirmRemove)
-
+  const {
+    boards,
+    setBoards,
+    spinLoading,
+    setSpinLoading,
+    invitedUsers,
+    setInvitedUsers,
+  } = useApp()
+  const navigate = useNavigate()
   const [listTitle, setListTitle] = useState('')
   const handleListTitleChange = (e) => setListTitle(e.target.value)
 
@@ -96,7 +109,31 @@ function Column(props) {
     setNewCardTitle('')
     toggleOpenNewCardForm()
   }
-
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure delete this column?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Please sure you want to do that,this action cannot be redone',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      async onOk() {
+        setSpinLoading(true)
+        try {
+          const data = await deleteColumn(column._id)
+          setSpinLoading(false)
+          message.success('Deleted succesfully')
+          // setInvitedUsers(data.invitedUsers)
+          navigate(0)
+        } catch (error) {
+          console.log(error)
+          message.error('Deleted Error')
+          // navigate(0)
+        }
+      },
+      onCancel() {},
+    })
+  }
   return (
     <div className="columns">
       <header className="column-drag-handle">
@@ -130,7 +167,7 @@ function Column(props) {
               <Dropdown.Item onClick={toggleOpenNewCardForm}>
                 Add card
               </Dropdown.Item>
-              <Dropdown.Item onClick={toggleShowConfirmRemove}>
+              <Dropdown.Item onClick={showDeleteConfirm}>
                 Archive this list
               </Dropdown.Item>
             </Dropdown.Menu>

@@ -12,9 +12,10 @@ const createNew = async (data) => {
     throw new Error(error)
   }
 }
-const getAll = async (user_id) => {
+const getAll = async (user_id, search) => {
   try {
-    const boards = await BoardModel.getAll(user_id)
+    const boards = await BoardModel.getAll(user_id, search)
+
     return boards
   } catch (error) {
     throw new Error(error)
@@ -64,6 +65,9 @@ const getFullBoard = async (boardId) => {
     transformBoard.columns = transformBoard.columns.filter(
       (column) => !column._destroy
     )
+    originalData.columns = originalData.columns.filter(
+      (column) => !column._destroy
+    )
 
     // Add cards to the columns
     // console.log('Origin:', originalData.columns)
@@ -73,7 +77,7 @@ const getFullBoard = async (boardId) => {
       column.cards.forEach((cardId) => {
         transformBoard.cards.forEach((card) => {
           // console.log(card._id, cardId)
-          if (card._id.toString() === cardId) cards.push(card)
+          if (card._id.toString() === cardId && !card._destroy) cards.push(card)
         })
       })
       column.cards = cards
@@ -96,7 +100,14 @@ const invitedUsers = async (boardId, data) => {
     throw new Error(error)
   }
 }
-
+const deleted = async (id) => {
+  try {
+    const deletedBoard = await BoardModel.deleted(id)
+    return deletedBoard
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 export const BoardService = {
   createNew,
   update,
@@ -104,5 +115,6 @@ export const BoardService = {
   getAll,
   getInvitedUsers,
   getCanInvitedUsers,
-  invitedUsers
+  invitedUsers,
+  deleted,
 }

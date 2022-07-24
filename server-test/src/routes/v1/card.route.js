@@ -6,7 +6,10 @@ const router = express.Router()
 
 router.route('/').post(CardValidation.createNew, CardController.createNew)
 
-router.route('/:id').put(CardValidation.update, CardController.update)
+router
+  .route('/:id')
+  .put(CardValidation.update, CardController.update)
+  .delete(CardController.deleted)
 router.route('/:id/comments').get(CardController.getAllComments)
 
 export const cardRoutes = router

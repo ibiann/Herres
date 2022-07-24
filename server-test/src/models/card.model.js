@@ -126,7 +126,20 @@ const deleteCards = async (ids) => {
     throw new Error(error)
   }
 }
-
+const deleted = async (id) => {
+  try {
+    const result = await getDB()
+      .collection(cardCollectionName)
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { _destroy: true } },
+        { returnDocumnet: 'after' }
+      )
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 export const CardModel = {
   cardCollectionName,
   createNew,
@@ -134,4 +147,5 @@ export const CardModel = {
   deleteCards,
   findOneById,
   getAllComments,
+  deleted,
 }

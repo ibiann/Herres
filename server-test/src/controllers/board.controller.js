@@ -31,10 +31,20 @@ const createNew = async (req, res) => {
 }
 
 const getFullBoard = async (req, res) => {
+  const { user_id: currentUserId } = res.locals
   try {
     const { id } = req.params
     const result = await BoardService.getFullBoard(id)
-    res.status(HttpStatusCode.OK).json(result)
+    if (
+      currentUserId === result.user_id.toString() ||
+      result?.invitedUsers.includes(currentUserId)
+    )
+      res.status(HttpStatusCode.OK).json(result)
+    else {
+      res
+        .status(HttpStatusCode.UNAVAILABLE)
+        .json({ message: 'You have no permission to this board' })
+    }
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
       errors: error.message,
@@ -43,10 +53,10 @@ const getFullBoard = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
-  const { recent } = req.query
+  const { recent, search } = req.query
   try {
     const { user_id } = res.locals
-    let result = await BoardService.getAll(user_id)
+    let result = await BoardService.getAll(user_id, search)
     if (parseInt(recent) > 0) {
       result = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, recent)
     }
@@ -92,12 +102,24 @@ const update = async (req, res) => {
     })
   }
 }
+
+const deleted = async (req, res) => {
+  try {
+    const { id } = req.params //destructuring //return về một array hay object rest api
+    const result = await BoardService.deleted(id)
+    console.log(result)
+    res.status(HttpStatusCode.OK).json(result)
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    })
+  }
+}
 const inviteUsers = async (req, res) => {
   try {
     const { id } = req.params //destructuring //return về một array hay object rest api
     console.log(req.body.invitedUsers)
     const result = await BoardService.invitedUsers(id, req.body.invitedUsers)
-    console.log(result)
     res.status(HttpStatusCode.OK).json(result)
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -113,4 +135,5 @@ export const BoardController = {
   inviteUsers,
   getInvitedUsers,
   getCanInvitedUsers,
+  deleted,
 }

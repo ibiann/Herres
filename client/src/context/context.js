@@ -8,6 +8,8 @@ export default function AppProvider({ children }) {
   const [invitedUsers, setInvitedUsers] = useState([])
   const [spinLoading, setSpinLoading] = useState(false)
   const [board, setBoard] = useState(null)
+  const [lengthLimitText, setLengthLimitText] = useState('')
+
   // const recentBoards = useMemo(() => {
   //   const s = boards.sort((a, b) => b.createdAt - a.createdAt).slice(0, 3)
   //   return s
@@ -41,6 +43,8 @@ export default function AppProvider({ children }) {
         setInvitedUsers,
         board,
         setBoard,
+        lengthLimitText,
+        setLengthLimitText,
       }}
     >
       {children}

@@ -8,3 +8,7 @@ export const getComments = async (id) => {
   const response = await axios.get(`${API_ROOT}/v1/cards/${id}/comments`)
   return response.data
 }
+export const deleteCard = async (id) => {
+  const response = await axios.delete(`${API_ROOT}/v1/cards/${id}`)
+  return response.data
+}
