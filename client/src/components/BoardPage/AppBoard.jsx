@@ -19,7 +19,7 @@ import {
   CloseOutlined,
   CoffeeOutlined,
   ContactsOutlined,
-  PlusOutlined,
+  EllipsisOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -138,7 +138,7 @@ function AppBoard() {
     confirm({
       title: 'Are you sure delete this board?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Please sure you want to do that,this action cannot be redone',
+      content: 'Please sure you want to do that, this action cannot be redone',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -224,7 +224,7 @@ function AppBoard() {
                       }}
                       alt="img"
                     >
-                      <PlusOutlined className="add-user-icon" />
+                      <EllipsisOutlined className="add-user-icon" />
                     </Avatar>
                   </Avatar.Group>
                   <span
@@ -284,7 +284,7 @@ function AppBoard() {
               <div className="board-actions">
                 <div className="items menu">
                   <IconButton aria-label="delete" onClick={showDeleteConfirm}>
-                    <DeleteIcon />
+                    <DeleteIcon style={{ color: "#c23616" }}/>
                   </IconButton>
                 </div>
               </div>

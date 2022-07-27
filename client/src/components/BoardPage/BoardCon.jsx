@@ -264,8 +264,8 @@ function BoardCon() {
                 onChange={onNewListTitleChange}
                 onKeyDown={(e) => e.key === 'Enter' && addNewList()}
               />
-              <Button variant="outline-success" size="sm" onClick={addNewList}>
-                Add list
+              <Button variant="outline-primary" size="sm" onClick={addNewList}>
+                Add List
               </Button>
               <span
                 className="cancel-adding-new-column-icon"

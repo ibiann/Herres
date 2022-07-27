@@ -12,14 +12,13 @@ const useStyle = makeStyles({
   loginFormContainer: {
     width: '100%',
     maxWidth: 320,
-    backgroundColor: 'red',
     padding: 22,
   },
   input: {
     margin: '8px 0px',
   },
   loginButton: {
-    backgroundColor: '#5AAC44',
+    backgroundColor: '#0069d9',
     color: '#FFF',
     width: '100%',
     fontWeight: 'bold',
@@ -43,7 +42,7 @@ const useStyle = makeStyles({
   logoTitle: {
     fontSize: 46,
     fontWeight: 'bold',
-    color: '#253959',
+    color: '#2d55ff',
   },
   loginPageContainer: {
     display: 'flex',
@@ -84,7 +83,7 @@ const RegisterPage = () => {
     <Box className={classes.loginPageContainer}>
       <Box className={classes.logoContainer}>
         <img className={classes.logoImage} src={logo} alt="logo" />
-        <Typography className={classes.logoTitle}>Trello</Typography>
+        <Link to="/" className={classes.logoTitle}>Merres</Link>
       </Box>
       <Paper className={classes.loginFormContainer}>
         <Typography className={classes.loginTitle}>

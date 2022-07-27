@@ -48,7 +48,7 @@ const Home = () => {
               <br />
               From hight rises to the home office, the way your team works is{" "}
               <br />
-              unique --- accomplish it all with Trello
+              unique --- accomplish it all with Merres
             </p>
             <button
               className="btn btn-primary"

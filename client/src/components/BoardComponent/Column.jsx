@@ -112,7 +112,7 @@ function Column(props) {
     confirm({
       title: 'Are you sure delete this column?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Please sure you want to do that,this action cannot be redone',
+      content: 'Please sure you want to do that, this action cannot be redone',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -164,7 +164,7 @@ function Column(props) {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={toggleOpenNewCardForm}>
-                Add card
+                Add Card
               </Dropdown.Item>
               <Dropdown.Item onClick={showDeleteConfirm}>
                 Archive this list
@@ -216,8 +216,8 @@ function Column(props) {
       <footer>
         {openNewCardForm && (
           <div className="add-new-card-handle">
-            <Button variant="outline-success" size="sm" onClick={addNewCard}>
-              Add card
+            <Button variant="outline-primary" size="sm" onClick={addNewCard}>
+              Add Card
             </Button>
             <span
               className="cancel-adding-new-column-icon"

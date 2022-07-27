@@ -233,7 +233,7 @@ function Card(props) {
     confirm({
       title: 'Are you sure delete this card?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Please sure you want to do that,this action cannot be redone',
+      content: 'Please sure you want to do that, this action cannot be redone',
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -465,7 +465,7 @@ function Card(props) {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={1200}
+        width={970}
         bodyStyle={{
           backgroundColor: '#f4f5f7',
           paddingTop: '200px',

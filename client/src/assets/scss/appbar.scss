@@ -35,14 +35,13 @@
           background-color: $app-bar-left-text-color-hover;
         }
         &.searching-bar {
-          padding: 6px 18px;
+          padding: auto;
+          margin-bottom: 5px;
           .group-searching {
             height: 24px;
           }
-          .searching-btn-handle {
-            background-color: rgba(86, 96, 101, 1);
-            padding-top: 2px;
-            border: none;
+          &:hover {
+            background-color: transparent;
           }
         }
         .text-element {
@@ -88,8 +87,8 @@
               rgb(10, 189, 227) 29%,
               rgb(200, 214, 229) 35%,
               rgb(223, 228, 234) 45%,
-              rgb(84, 160, 255) 67%,
-              rgb(46, 134, 222) 100%
+              rgb(72, 126, 176) 67%,
+              rgb(64, 115, 158) 100%
             );
             background-clip: border-box;
             background-size: 200% auto;

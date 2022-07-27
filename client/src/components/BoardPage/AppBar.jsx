@@ -187,7 +187,6 @@ function AppBar() {
                     >
                       <Button
                         type="primary"
-                        icon={<SearchOutlined />}
                         loading={handleLoading[2]}
                         onClick={() => handleEnterLoading(2)}
                         className="searching-btn-handle"

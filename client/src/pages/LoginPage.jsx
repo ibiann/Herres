@@ -14,7 +14,6 @@ const useStyle = makeStyles({
   loginFormContainer: {
     width: '100%',
     maxWidth: 320,
-    backgroundColor: 'red',
     padding: 22,
   },
   input: {
@@ -45,7 +44,7 @@ const useStyle = makeStyles({
   logoTitle: {
     fontSize: 46,
     fontWeight: 'bold',
-    color: '#253959',
+    color: '#2d55ff',
   },
   loginPageContainer: {
     display: 'flex',
@@ -91,10 +90,10 @@ const LoginPage = () => {
     <Box className={classes.loginPageContainer}>
       <Box className={classes.logoContainer}>
         <img className={classes.logoImage} src={logo} alt="logo" />
-        <Typography className={classes.logoTitle}>Trello</Typography>
+        <Link to="/" className={classes.logoTitle}>Merres</Link>
       </Box>
       <Paper className={classes.loginFormContainer}>
-        <Typography className={classes.loginTitle}>Login to Trello</Typography>
+        <Typography className={classes.loginTitle}>Login to Merres</Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label>Username</label>

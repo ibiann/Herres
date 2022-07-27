@@ -27,19 +27,19 @@ $screen-iphone: 488px;
 
 /* Colors */
 //AppBar colors
-$app-bar-background-color: rgba(128, 142, 155, 1);
+$app-bar-background-color: rgba(25, 42, 86,1.0);
 $app-bar-text-color: rgba(223, 228, 234, 1);
 $app-bar-placeholder-color: rgb(47, 54, 64);
-$app-bar-left-text-color-hover: rgba(164, 176, 190, 1);
+$app-bar-left-text-color-hover: rgb(116, 185, 255);
 $app-bar-right-text-color-hover: rgba(164, 176, 190, 1);
 $searching-input-bar: rgb(245, 246, 250);
 $searching-input-bar-icon: rgba(116, 125, 140, 1);
 
 //AppBoard colors
-$app-board-text: rgb(34, 47, 62);
-$app-board-element-background-color: rgba(223, 228, 234, 1);
+$app-board-text: rgba(223, 228, 234, 1);
+$app-board-element-background-color: transparent;
 $app-board-divider: rgb(245, 246, 250);
-$app-board-hover-icon-color: rgba(164, 176, 190, 1);
+$app-board-hover-icon-color: rgb(116, 185, 255);
 
 //BoardCont colors
 $board-content-background-color: rgba(223, 228, 234, 1);

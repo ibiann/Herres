@@ -152,7 +152,7 @@ const BoardsBox = () => {
   return (
     <Spin spinning={spinLoading} size="large">
       <div className="create-board-navbar">
-        <AppBar />(
+        <AppBar />
         <div className="create-container">
           <Button type="primary" onClick={showModal} className="add-board-icon">
             <PlusOutlined />
@@ -215,7 +215,7 @@ const BoardsBox = () => {
             onCancel={handleCancel}
             footer={[
               <Button key="back" onClick={handleCancel}>
-                <CloseOutlined />
+                <CloseOutlined style={{color: "rgb(234, 32, 39)"}}/>
               </Button>,
               <Button
                 key="submit"
