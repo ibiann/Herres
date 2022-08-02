@@ -9,6 +9,7 @@
   background-color: $app-bar-background-color;
   backdrop-filter: blur(20px);
   color: $app-bar-text-color;
+
   .appbar-container {
     max-width: 100%;
     .action-apps {
@@ -137,17 +138,17 @@
       }
     }
   }
-  @keyframes spin-animation {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes textclip {
-    to {
-      background-position: 200%;
-    }
-  }
+  // @keyframes spin-animation {
+  //   from {
+  //     transform: rotate(0deg);
+  //   }
+  //   to {
+  //     transform: rotate(360deg);
+  //   }
+  // }
+  // @keyframes textclip {
+  //   to {
+  //     background-position: 200%;
+  //   }
+  // }
 }

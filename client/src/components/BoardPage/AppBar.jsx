@@ -6,8 +6,6 @@ import SettingBox from '../Modal/SettingBox'
 import { BOARD_URL_PATTERN, MODAL_CONFIRM } from '../../util/const'
 import { Dropdown, Menu, Tooltip, Button, Input, message } from 'antd'
 import logo from '../../assets/img/logo.png'
-import { IconButton } from '@mui/material'
-
 import {
   HomeFilled,
   ProjectOutlined,
@@ -23,7 +21,6 @@ import { getBoards, getBoardsRecent } from '../../api/board'
 import { useCurrentPath } from '../../util/getCurrentRoute'
 import { BOARDS_URL_PATTERN } from './../../util/const'
 function AppBar() {
-  // const { Search } = Input
   const {
     auth: user,
     setAuth,
