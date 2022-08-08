@@ -67,7 +67,7 @@ const LoginPage = () => {
   })
 
   const formOptions = { resolver: yupResolver(validationSchema) }
-  const { register, handleSubmit, setError, formState } = useForm(formOptions)
+  const { register, handleSubmit, formState } = useForm(formOptions)
   const { errors } = formState
 
   const onSubmit = async (formData) => {
